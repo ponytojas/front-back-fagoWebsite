@@ -15,7 +15,6 @@ module.exports = {
                 msg: 'Please enter a password with min. 6 chars'
             });
         }
-
         // password (repeat) does not match
         if (
             !req.body.password_repeat ||
@@ -25,7 +24,6 @@ module.exports = {
                 msg: 'Both passwords must match'
             });
         }
-
         next();
     }
 };
