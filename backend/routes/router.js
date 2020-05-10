@@ -14,7 +14,7 @@ router.get('/', (request, response) => {
     response.send('Our first Node.js webserver');
 });
 
-router.post('/sign-up', userMiddleware.validateRegister, (req, res, next) => {
+router.post('/sign-up',userMiddleware.isSuperUser, userMiddleware.validateRegister, (req, res, next) => {
     let text = "SELECT * FROM user_login WHERE LOWER(username) = LOWER($1)"
     let values = [req.body.username]
     db.query(text, values, (err, result) => {
@@ -34,12 +34,11 @@ router.post('/sign-up', userMiddleware.validateRegister, (req, res, next) => {
                         });
                     } else {
 
-                        let text = "INSERT INTO user_login (id, username, password, register_date) VALUES ($1, $2, $3," +
-                            " to_timestamp($4 / 1000.0)) " +
-                            "RETURNING *"
+                        let text = "INSERT INTO user_login (id, username, password, register_date, is_superuser)" +
+                            " VALUES ($1, $2, $3, to_timestamp($4 / 1000.0), $5) RETURNING *";
                         let date = Date.now();
                         let uuid_user = uuid.v4();
-                        let values = [uuid_user, req.body.username, hash, date];
+                        let values = [uuid_user, req.body.username, hash, date, req.body.superuser];
                         db.query(text, values, (err, database_response) => {
                             if (err) {
                                 console.log(err.stack)
@@ -118,7 +117,8 @@ router.post('/login', (req, res, next) => {
     );
 });
 
-router.get('/secret-route', (req, res, next) => {
+router.get('/secret-route', userMiddleware.isLoggedIn, (req, res, next) => {
+    console.log(req.userData);
     res.send('This is the secret content. Only logged in users can see that!');
 });
 

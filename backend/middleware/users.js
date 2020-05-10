@@ -1,4 +1,6 @@
 // middleware/users.js
+const jwt = require('jsonwebtoken');
+const db = require('../lib/db.js');
 
 module.exports = {
     validateRegister: (req, res, next) => {
@@ -25,5 +27,48 @@ module.exports = {
             });
         }
         next();
+    },
+
+    isLoggedIn: (req, res, next) => {
+        try {
+            const token = req.headers.authorization;
+            const decoded = jwt.verify(
+                token,
+                'SECRETKEY'
+            );
+            req.userData = decoded;
+            next();
+        } catch (err) {
+            return res.status(401).send({
+                msg: 'Your session is not valid!'
+            });
+        }
+    },
+
+    isSuperUser: (req, res, next) => {
+        try {
+            const token = req.headers.authorization;
+            const decoded = jwt.verify(
+                token,
+                'SECRETKEY'
+            );
+            req.userData = decoded;
+            let text = "SELECT * FROM user_login WHERE id = $1";
+            let values = [req.userData.userId];
+            db.query(text, values, (err, result) => {
+                if (err)
+                    return res.status(400).send({msg: err})
+                else if (result.rows[0].is_superuser)
+                    next()
+                else
+                    return res.status(401).send({
+                        msg: 'Your session is not valid!'
+                    });
+            });
+        } catch (err) {
+            return res.status(401).send({
+                msg: 'Your session is not valid!'
+            });
+        }
     }
-};
+}
