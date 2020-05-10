@@ -32,11 +32,10 @@ module.exports = {
     isLoggedIn: (req, res, next) => {
         try {
             const token = req.headers.authorization;
-            const decoded = jwt.verify(
+            req.userData = jwt.verify(
                 token,
                 'SECRETKEY'
             );
-            req.userData = decoded;
             next();
         } catch (err) {
             return res.status(401).send({
@@ -48,11 +47,10 @@ module.exports = {
     isSuperUser: (req, res, next) => {
         try {
             const token = req.headers.authorization;
-            const decoded = jwt.verify(
+            req.userData = jwt.verify(
                 token,
                 'SECRETKEY'
             );
-            req.userData = decoded;
             let text = "SELECT * FROM user_login WHERE id = $1";
             let values = [req.userData.userId];
             db.query(text, values, (err, result) => {
