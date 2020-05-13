@@ -1,12 +1,13 @@
 // lib/db.js
 const { Client } = require('pg')
+const CONFIG = require('./config.json');
 
 const client = new Client({
-    host: 'localhost',
-    user: 'ponyxcgv',
-    database: 'ponyxcgv_articulos_lore',
-    password: '2Patatas.Fritas',
-    port: '5433'
+    host: CONFIG.host,
+    user: CONFIG.user,
+    database: CONFIG.database,
+    password: CONFIG.password,
+    port: CONFIG.port
 })
 
 client.connect()
