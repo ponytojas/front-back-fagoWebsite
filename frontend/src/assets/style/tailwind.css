@@ -1,3 +1,14 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+#app {
+  font-family: "Open Sans", sans-serif;
+}
