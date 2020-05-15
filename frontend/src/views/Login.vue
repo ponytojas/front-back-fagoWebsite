@@ -1,13 +1,110 @@
 <template>
-    <div />
+  <div
+    class="container mx-auto p-64 flex justify-center inline-block align-middle h-screen p-8"
+  >
+    <form class="w-full max-w-xl" @keyup.native.enter="login">
+      <div class="md:flex md:items-center mb-6">
+        <div class="md:w-1/4"></div>
+        <div class="md:w-3/4">
+          <p class="text-4xl antialiased text-gray-800">
+            Enter your credentials
+          </p>
+        </div>
+      </div>
+      <div class="md:flex md:items-center mb-6">
+        <div class="md:w-1/4">
+          <label
+            class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+            for="username"
+          >
+            Username
+          </label>
+        </div>
+        <div class="md:w-3/4">
+          <input
+            class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+            id="username"
+            v-model="username"
+            type="text"
+            v-on:keyup.enter="login"
+          />
+        </div>
+      </div>
+      <div class="md:flex md:items-center mb-6">
+        <div class="md:w-1/4">
+          <label
+            class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+            for="password"
+          >
+            Password
+          </label>
+        </div>
+        <div class="md:w-3/4">
+          <input
+            class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+            id="password"
+            v-model="password"
+            type="password"
+            v-on:keyup.enter="login"
+          />
+        </div>
+      </div>
+      <div class="md:flex md:items-center">
+        <div class="md:w-1/4"></div>
+        <div class="md:w-3/4">
+          <button
+            class="shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            type="button"
+            @click="login"
+            value="Login"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+      <div class="md:flex md:items-center mt-5">
+        <div class="md:w-1/4"></div>
+        <div class="md:w-3/4">
+          <p v-if="msg" class="text-red-600">{{ msg }}</p>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "Login"
+import AuthService from "../services/AuthService.js";
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      username: "",
+      password: "",
+      msg: ""
     };
+  },
+  methods: {
+    async login() {
+      try {
+        const credentials = {
+          username: this.username,
+          password: this.password
+        };
+        const response = await AuthService.login(credentials);
+        this.msg = response.msg;
+        console.log(response);
+        const token = response.token;
+        const user = response.user;
+        await this.$store
+          .dispatch("login", { token, user })
+          .then(() => this.$router.push("/"));
+      } catch (error) {
+        this.msg = error.response.data.msg;
+      }
+    }
+  }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
