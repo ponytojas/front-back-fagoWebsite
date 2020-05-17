@@ -96,8 +96,7 @@ export default {
       username: "",
       password: "",
       msg: "",
-      loading: false,
-      backgroundImage: "~@/assets/login-background.png"
+      loading: false
     };
   },
   methods: {
@@ -110,7 +109,6 @@ export default {
         };
         const response = await AuthService.login(credentials);
         this.msg = response.msg;
-        console.log(response);
         const token = response.token;
         const user = response.user;
         await this.$store
