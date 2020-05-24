@@ -1,5 +1,7 @@
 # FagoLambda Website
 
+# :heavy_exclamation_mark: This project will keep alive but I will host separete projects in order to deploy it separately :heavy_exclamation_mark:
+
 I'm making a simple website with back and front that will host biology articles.
 
 ## Backend
