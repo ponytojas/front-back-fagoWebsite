@@ -109,3 +109,5 @@ dist
 
 
 config.json
+./*/.git
+
