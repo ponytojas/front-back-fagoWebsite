@@ -11,7 +11,7 @@ app.use(cors());
 
 // add routes
 const router = require('./routes/router.js');
-app.use('/api', router);
+app.use('/', router);
 
 
 // run server
