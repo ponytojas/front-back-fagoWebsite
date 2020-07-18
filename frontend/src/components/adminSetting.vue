@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <p class="text-xl">{{ text }}</p>
-    <v-icon :class="color" scale="3"  :name="icon" />
-  </div>
+  <a href="#">
+    <div class="border rounded-md">
+      <v-icon :class="color" class="pt-3" scale="3" :name="icon" />
+      <p class="text-xl pt-3 pb-3">{{ text }}</p>
+    </div>
+  </a>
 </template>
 
 <script>

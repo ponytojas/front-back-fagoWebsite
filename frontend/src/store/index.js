@@ -9,7 +9,8 @@ Vue.use(Vuex);
 const getDefaultState = () => {
   return {
     token: "",
-    user: {}
+    user: {},
+    isSuperuser: false,
   };
 };
 
@@ -18,12 +19,12 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: getDefaultState(),
   getters: {
-    isLoggedIn: state => {
+    isLoggedIn: (state) => {
       return state.token;
     },
-    getUser: state => {
+    getUser: (state) => {
       return state.user;
-    }
+    },
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -32,9 +33,9 @@ export default new Vuex.Store({
     SET_USER: (state, user) => {
       state.user = user;
     },
-    RESET: state => {
+    RESET: (state) => {
       Object.assign(state, getDefaultState());
-    }
+    },
   },
   actions: {
     login: ({ commit }, { token, user }) => {
@@ -46,6 +47,6 @@ export default new Vuex.Store({
     },
     logout: ({ commit }) => {
       commit("RESET", "");
-    }
-  }
+    },
+  },
 });

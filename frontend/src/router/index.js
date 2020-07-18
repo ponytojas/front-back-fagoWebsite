@@ -8,28 +8,28 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
   },
   {
     path: "/about",
     name: "About",
 
-    component: () => import("../views/About.vue")
+    component: () => import("../views/About.vue"),
   },
   {
     path: "/login",
     name: "LogIn",
-    component: () => import("../views/Login")
+    component: () => import("../views/Login"),
   },
   {
     path: "/admin",
     name: "Admin",
-    component: () => import("../views/Admin")
-  }
+    component: () => import("../views/Admin"),
+  },
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
 });
 
 export default router;

@@ -5,12 +5,16 @@
       'background-image': 'url(https://ponytojas.dev/login-background.png)',
     }"
   >
-    <div class="container mx-auto p-64 flex justify-center inline-block align-middle h-screen p-8">
+    <div
+      class="container mx-auto p-64 flex justify-center inline-block align-middle h-screen p-8"
+    >
       <form class="w-full max-w-xl" @keyup.native.enter="login">
         <div class="md:flex md:items-center mb-6">
           <div class="md:w-1/4"></div>
           <div class="md:w-3/4">
-            <p class="text-4xl antialiased text-gray-800">Enter your credentials</p>
+            <p class="text-4xl antialiased text-gray-800">
+              Enter your credentials
+            </p>
           </div>
         </div>
         <div class="md:flex md:items-center mb-6">
@@ -18,7 +22,8 @@
             <label
               class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
               for="username"
-              >Username</label>
+              >Username</label
+            >
           </div>
           <div class="md:w-3/4">
             <input
@@ -35,7 +40,8 @@
             <label
               class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
               for="password"
-            >Password</label>
+              >Password</label
+            >
           </div>
           <div class="md:w-3/4">
             <input
