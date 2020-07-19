@@ -34,7 +34,7 @@ module.exports = {
             const token = req.headers.authorization;
             req.userData = jwt.verify(
                 token,
-                'SECRETKEY'
+                'SuperSecretKeyUsed'
             );
             next();
         } catch (err) {
@@ -49,7 +49,7 @@ module.exports = {
             const token = req.headers.authorization;
             req.userData = jwt.verify(
                 token,
-                'SECRETKEY'
+                'SuperSecretKeyUsed'
             );
             let text = "SELECT * FROM user_login WHERE id = $1";
             let values = [req.userData.userId];
