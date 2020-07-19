@@ -9,9 +9,11 @@ const db = require("../lib/db.js");
 const userMiddleware = require("../middleware/users.js");
 
 const uuid = require("uuid");
+const model = require('../lib/articles.js');
 
-router.get("/", (request, response) => {
-  response.send("Our first Node.js webserver");
+router.get("/", async(request, response) => {
+  //response.send("These aren't the Droids you're looking for. . . ");
+  response.send(await model.articles())
 });
 
 router.post(
@@ -104,7 +106,7 @@ router.post("/login", (req, res, next) => {
                 username: result.rows[0].username,
                 userId: result.rows[0].id
               },
-              "SECRETKEY",
+              "SuperSecretKeyUsed",
               {
                 expiresIn: "7d"
               }
@@ -145,6 +147,38 @@ router.post("/login", (req, res, next) => {
 router.get("/secret-route", userMiddleware.isLoggedIn, (req, res, next) => {
   console.log(req.userData);
   res.send("This is the secret content. Only logged in users can see that!");
+});
+
+router.get("/articles", userMiddleware.isLoggedIn, (req, res, next) => {
+  console.log(req.userData);
+  res.send("This is the secret content. Only logged in users can see that!");
+});
+
+router.post("/articles", userMiddleware.isLoggedIn, (req, res, next) => {
+  console.log(req.userData);
+  let date = Date.now();
+  let uuid_article = uuid.v4();
+  let text = "INSERT INTO article(article_id, title, subtitle, body, author, create_date, update_date)" +
+      "VALUES($1, $2, $3, $4, $5,  to_timestamp($6 / 1000.0), to_timestamp($6 / 1000.0))";
+  let values = [
+      uuid_article,
+      req.body.title,
+      req.body.subtitle,
+      req.body.body,
+      req.body.author,
+      date
+  ];
+  db.query(text, values, (err, database_response) => {
+    if (err) {
+      console.log(err.stack);
+    } else {
+      console.log(
+          "Received a new article, added correctly to database"
+      );
+      console.log("Client response => New article added to database");
+      res.status(200).send({msg: "New article added to database"});
+    }
+  });
 });
 
 module.exports = router;
