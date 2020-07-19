@@ -1,15 +1,13 @@
 const db = require("../lib/db.js");
 
 
-const articles =  function() {
-    console.log("Pierdes")
+const getAllArticles =  function() {
     return new Promise(async (resolve, reject) =>
     {
         await db.query('SELECT * from article', [], (err, res) => {
             if (err) {
                 console.log(err.stack);
             } else {
-                conosle.log(res.rows)
                 resolve(res.rows);
             }
         })
@@ -17,6 +15,6 @@ const articles =  function() {
     )
 }
 
-module.export = {
-    articles
+module.exports = {
+    getAllArticles
 }
