@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@saeris/vue-spinners": "^1.0.8",
+    "@trevoreyre/autocomplete-vue": "^2.2.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "parcel-bundler": "^1.12.4",

@@ -7,9 +7,12 @@ import "@/assets/style/tailwind.css";
 import { VueSpinners } from "@saeris/vue-spinners";
 import "vue-awesome/icons";
 import Icon from "vue-awesome/components/Icon";
+import Autocomplete from "@trevoreyre/autocomplete-vue";
+import "@trevoreyre/autocomplete-vue/dist/style.css";
 
 Vue.use(VueSpinners);
 Vue.component("v-icon", Icon);
+Vue.use(Autocomplete);
 
 Vue.config.productionTip = false;
 Axios.defaults.headers.common["Authorization"] = `Bearer ${store.state.token}`;
