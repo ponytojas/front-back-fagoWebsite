@@ -8,7 +8,6 @@ const getAllArticles =  function() {
             if (err) {
                 console.log(err.stack);
             } else {
-                conosle.log(res.rows)
                 resolve(res.rows);
             }
         })
