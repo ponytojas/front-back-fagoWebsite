@@ -13,7 +13,7 @@ const model = require('../lib/articles.js');
 
 router.get("/", async(request, response) => {
   //response.send("These aren't the Droids you're looking for. . . ");
-  response.send(await model.articles())
+  response.send(await model.getAllArticles())
 });
 
 router.post(
