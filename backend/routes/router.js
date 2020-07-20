@@ -14,6 +14,7 @@ const uuid = require("uuid");
 const modelArticles = require("../lib/articles.js");
 const modelTags = require("../lib/tags.js");
 const modelArticlesTags = require("../lib/article-tag.js");
+const modelData = require("../lib/serveToWeb.js");
 
 router.get("/", async (request, response) => {
   response.send("These aren't the Droids you're looking for. . . ");
@@ -259,6 +260,13 @@ router.get("/article-tag", async (req, res, next) => {
   console.log("A new request trying to get all articles-tags");
   res.send(await modelArticlesTags.getAllArticlesTags());
   console.log("All articles-tags sent");
+});
+
+
+router.get("/get-data-for-web", async (req, res, next) => {
+  console.log("A new request trying to get data for web");
+  res.send(await modelData.getDataForWeb());
+  console.log("All data for web sent");
 });
 
 module.exports = router;
