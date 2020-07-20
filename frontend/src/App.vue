@@ -5,6 +5,11 @@
 </template>
 
 <style>
+body{
+  overflow-x: hidden;
+  width: 100vw;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -27,4 +32,5 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
 </style>
