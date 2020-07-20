@@ -51,17 +51,14 @@ const setData = async function(newData, variable){
         case 0:
             data.articles = newData;
             await setTimestampArticles();
-            await generateNewWebData();
             break;
         case 1:
             data.tags = newData;
             await setTimestampTags();
-            await generateNewWebData();
             break;
         case 2:
             data.articlesTags = newData;
             await setTimestampArticlesTags();
-            await generateNewWebData();
             break;
         case 3:
             await generateNewWebData();
@@ -92,8 +89,6 @@ async function generateNewWebData(){
             }
         }
         data.webData[index].tags = tagsName
-
-
     }
     globalTimestamp = Date.now()
     globalLock = false;
