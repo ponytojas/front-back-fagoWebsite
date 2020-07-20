@@ -6,7 +6,7 @@
     }"
   >
     <div
-      class="container mx-auto p-64 flex justify-center inline-block align-middle h-screen p-8"
+      class="container mx-auto p-64 flex justify-center  align-middle h-screen"
     >
       <form class="w-full max-w-xl" @keyup.native.enter="login">
         <div class="md:flex md:items-center mb-6">
