@@ -1,17 +1,39 @@
 <template>
   <div class="home">
-    <div class="container h-screen">
-      <div v-if="loaded" class="grid-cols-2">
+    <div class="h-auto min-h-screen overflow-x-hidden">
+      <div class="bg-green-600 lg:h-64 md:h-56 sm:h-56 h-48 grid-rows-2">
+        <p
+          class="text-center h-full align-middle text-white text-4xl lg:text-5xl xl:text-6xl font-hairline pt-8"
+        >
+          FagoLambda
+        </p>
+        <div class="grid grid-cols-3 gap-2 container mx-auto top">
+          <v-icon class="pt-3 text-yellow-500" scale="3" name="info-circle" />
+          <v-icon class="pt-3 text-yellow-500" scale="3" name="file" />
+          <v-icon class="pt-3 text-yellow-500" scale="3" name="graduation-cap" />
+        </div>
+      </div>
+      <div
+        v-if="loaded"
+        class="flex flex-row align-middle justify-center h-auto"
+      >
         <autocomplete
-          class="p-6 items-center"
+          class="w-1/2 sm:w-1/2 md:w-1/3 xl:w-1/3 lg:w-1/3 rounded-md mb-6"
           :search="search"
           placeholder="Busca un artículo"
           aria-label="Busca un artículo"
+          style="
+            margin-top: -3vh;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+              0 6px 6px rgba(0, 0, 0, 0.23);
+          "
         />
       </div>
-      <div class="grid grid-cols-3 gap-4 container mx-auto">
+      <div
+        class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6 container mx-auto"
+      >
         <div v-for="article in articles" v-bind:key="article.article_id">
-          <ArticleCard :article="article" class="pb-4 mb-3" />
+          <ArticleCard :article="article" class="" />
         </div>
       </div>
       <router-link class="m-5 p-5" to="/login">
