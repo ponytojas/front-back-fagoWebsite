@@ -9,7 +9,8 @@ const db = require("../lib/db.js");
 const userMiddleware = require("../middleware/users.js");
 
 const uuid = require("uuid");
-const model = require('../lib/articles.js');
+const modelArticles = require('../lib/articles.js');
+const modelTags = require('../lib/tags.js');
 
 router.get("/", async (request, response) => {
     response.send("These aren't the Droids you're looking for. . . ");
@@ -150,7 +151,7 @@ router.get("/secret-route", userMiddleware.isLoggedIn, (req, res, next) => {
 
 router.get("/articles", async (req, res, next) => {
     console.log("A new request trying to get all articles");
-    res.send(await model.getAllArticles());
+    res.send(await modelArticles.getAllArticles());
     console.log("All articles sent");
 });
 
@@ -179,6 +180,33 @@ router.post("/articles", userMiddleware.isLoggedIn, (req, res, next) => {
             res.status(200).send({msg: "New article added to database"});
         }
     });
+});
+
+router.post("/tags", userMiddleware.isLoggedIn, (req, res, next) => {
+    console.log(req.userData);
+    let uuid_tag = uuid.v4();
+    let text = "INSERT INTO tag(tag_id, tag_name) VALUES($1, $2)";
+    let values = [
+        uuid_tag,
+        req.body.tag_name
+    ];
+    db.query(text, values, (err) => {
+        if (err) {
+            console.log(err.stack);
+        } else {
+            console.log(
+                "Received a new tag, added correctly to database"
+            );
+            console.log("Client response => New tag added to database");
+            res.status(200).send({msg: "New tag added to database"});
+        }
+    });
+});
+
+router.get("/tags", async (req, res, next) => {
+    console.log("A new request trying to get all tags");
+    res.send(await modelTags.getAllTags());
+    console.log("All tags sent");
 });
 
 module.exports = router;
