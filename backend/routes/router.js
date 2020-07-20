@@ -230,16 +230,10 @@ router.post(
         return res.status(400).send({ msg: err });
       }
       if (result.rows.length) {
-        if (
-          result.rows.some((article_tag) => {
-            return (
-              article_tag.article === req.body.article &&
-              article_tag.tag === req.body.tag
-            );
-          })
-        )
-          console.log("This article already has this tag");
-        return res.status(400).send({ msg: "This tag already has this tag" });
+          if(result.rows.filter(tuple => tuple.article === req.body.article && tuple.tag === req.body.tag).length){
+              console.log("This article already has this tag");
+              return res.status(400).send({msg: "This tag already has this tag"});
+          }
       }
       console.log("Article is not linked trying to link both");
       let insertQuery = "INSERT INTO article_tag(article, tag) VALUES($1, $2)";
