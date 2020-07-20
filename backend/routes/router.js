@@ -7,10 +7,13 @@ const jwt = require("jsonwebtoken");
 
 const db = require("../lib/db.js");
 const userMiddleware = require("../middleware/users.js");
+const articleMiddleware = require("../middleware/articles.js");
+const tagMiddleware = require("../middleware/tags.js");
 
 const uuid = require("uuid");
 const modelArticles = require('../lib/articles.js');
 const modelTags = require('../lib/tags.js');
+const modelArticlesTags = require('../lib/article-tag.js');
 
 router.get("/", async (request, response) => {
     response.send("These aren't the Droids you're looking for. . . ");
@@ -155,7 +158,7 @@ router.get("/articles", async (req, res, next) => {
     console.log("All articles sent");
 });
 
-router.post("/articles", userMiddleware.isLoggedIn, (req, res, next) => {
+router.post("/articles", userMiddleware.isLoggedIn, userMiddleware.isSuperUser, (req, res, next) => {
     console.log(req.userData);
     let date = Date.now();
     let uuid_article = uuid.v4();
@@ -182,7 +185,7 @@ router.post("/articles", userMiddleware.isLoggedIn, (req, res, next) => {
     });
 });
 
-router.post("/tags", userMiddleware.isLoggedIn, (req, res, next) => {
+router.post("/tags", userMiddleware.isLoggedIn, userMiddleware.isSuperUser, (req, res, next) => {
     console.log(req.userData);
     let uuid_tag = uuid.v4();
     let text = "INSERT INTO tag(tag_id, tag_name) VALUES($1, $2)";
@@ -208,5 +211,41 @@ router.get("/tags", async (req, res, next) => {
     res.send(await modelTags.getAllTags());
     console.log("All tags sent");
 });
+
+router.post("/article-tag", userMiddleware.isLoggedIn, userMiddleware.isSuperUser, articleMiddleware.isValidArticleID,
+    tagMiddleware.isValidTagID, (req, res, next) => {
+    console.log("Checking if article is not already linked to tag")
+        let oldQuery = "SELECT * FROM article_tag";
+        db.query(oldQuery, [], (err, result) => {
+            if (err) {
+                return res.status(400).send({msg: err});
+            }
+            if (result.rows.length) {
+                if (result.rows.some(article_tag => {
+                    return article_tag.article === req.body.article && article_tag.tag === req.body.tag
+                }))
+                    console.log("This article already has this tag")
+                    return res.status(400).send({msg: "This tag already has this tag"});
+            }
+            console.log("Article is not linked trying to link both")
+            let insertQuery = "INSERT INTO article_tag(article, tag) VALUES($1, $2)";
+            let valuesInsert = [req.body.article, req.body.tag]
+            db.query(insertQuery, valuesInsert, (err, result) => {
+                if (err) {
+                    return res.status(400).send({msg: err});
+                } else {
+                    console.log("Article correctly linked to tag")
+                    res.status(200).send({msg: "Article correctly linked to tag"});
+                }
+            })
+        });
+    });
+
+router.get("/article-tag", async (req, res, next) => {
+    console.log("A new request trying to get all articles-tags");
+    res.send(await modelArticlesTags.getAllArticlesTags());
+    console.log("All articles-tags sent");
+});
+
 
 module.exports = router;
