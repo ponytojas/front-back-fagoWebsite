@@ -13,8 +13,9 @@ const tagMiddleware = require("../middleware/tags.js");
 const uuid = require("uuid");
 const modelArticles = require("../lib/articles.js");
 const modelTags = require("../lib/tags.js");
-const modelArticlesTags = require("../lib/article-tag.js");
-const modelData = require("../lib/serveToWeb.js");
+const modelArticlesTags = require("../lib/article-tag.js")
+
+const modelData = require("../data/data")
 
 router.get("/", async (request, response) => {
   response.send("These aren't the Droids you're looking for. . . ");
@@ -163,7 +164,7 @@ router.post(
   "/articles",
   userMiddleware.isLoggedIn,
   userMiddleware.isSuperUser,
-  (req, res, next) => {
+  async (req, res, next) => {
     console.log(req.userData);
     let date = Date.now();
     let uuid_article = uuid.v4();
@@ -187,6 +188,7 @@ router.post(
         res.status(200).send({ msg: "New article added to database" });
       }
     });
+    await modelData.setData(await modelArticles.getAllArticles(), 0)
   }
 );
 
@@ -194,7 +196,7 @@ router.post(
   "/tags",
   userMiddleware.isLoggedIn,
   userMiddleware.isSuperUser,
-  (req, res, next) => {
+  async (req, res, next) => {
     console.log(req.userData);
     let uuid_tag = uuid.v4();
     let text = "INSERT INTO tag(tag_id, tag_name) VALUES($1, $2)";
@@ -208,6 +210,7 @@ router.post(
         res.status(200).send({ msg: "New tag added to database" });
       }
     });
+    await modelData.setData(await modelTags.getAllTags(), 1)
   }
 );
 
@@ -223,7 +226,7 @@ router.post(
   userMiddleware.isSuperUser,
   articleMiddleware.isValidArticleID,
   tagMiddleware.isValidTagID,
-  (req, res, next) => {
+  async (req, res, next) => {
     console.log("Checking if article is not already linked to tag");
     let oldQuery = "SELECT * FROM article_tag";
     db.query(oldQuery, [], (err, result) => {
@@ -253,6 +256,7 @@ router.post(
         }
       });
     });
+    await modelData.setData(await modelArticlesTags.getAllArticlesTags(), 2)
   }
 );
 
@@ -263,10 +267,21 @@ router.get("/article-tag", async (req, res, next) => {
 });
 
 
+router.get("/get-data-for-web-debug", async (req, res, next) => {
+  console.log("[DEBUG] A new request trying to get data for web");
+  await modelData.setData(await modelArticles.getAllArticles(), 0)
+  await modelData.setData(await modelTags.getAllTags(), 1)
+  await modelData.setData(await modelArticlesTags.getAllArticlesTags(), 2)
+  await modelData.setData("", 3)
+  res.send(await modelData.getData());
+  console.log("[DEBUG] All data for web sent");
+});
+
 router.get("/get-data-for-web", async (req, res, next) => {
   console.log("A new request trying to get data for web");
-  res.send(await modelData.getDataForWeb());
+  res.send(await modelData.getData());
   console.log("All data for web sent");
 });
+
 
 module.exports = router;

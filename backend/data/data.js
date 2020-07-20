@@ -63,7 +63,11 @@ const setData = async function(newData, variable){
             await setTimestampArticlesTags();
             await generateNewWebData();
             break;
+        case 3:
+            await generateNewWebData();
+            break;
     }
+    dataLock = false;
 }
 
 async function generateNewWebData(){
@@ -71,7 +75,26 @@ async function generateNewWebData(){
         while(globalLock)
             await snooze(1000);
     globalLock = true;
+    for (let index = 0; index < data.articles.length; index++){
+        data.webData[index] = data.articles[index];
+        let tagsIDs = []
+        for (let indexTagsID = 0; indexTagsID < data.articlesTags.length; indexTagsID++){
+            if(data.articlesTags[indexTagsID].article === data.articles[index].article_id)
+                tagsIDs.push(data.articlesTags[indexTagsID].tag)
+        }
+        let tagsName = []
+        for(let indexTags = 0; indexTags < data.tags.length; indexTags++){
+            for (let indexTagsID = 0; indexTagsID < tagsIDs.length; indexTagsID++){
+                if(tagsIDs[indexTagsID] === data.tags[indexTags].tag_id) {
+                    tagsName.push(data.tags[indexTags].tag_name)
+                    break;
+                }
+            }
+        }
+        data.webData[index].tags = tagsName
 
+
+    }
     globalTimestamp = Date.now()
     globalLock = false;
 }
