@@ -89,7 +89,8 @@ export default {
 }
 
 .modal-header,
-.modal-footer, modal-subtitle {
+.modal-footer,
+modal-subtitle {
   padding: 15px;
   display: flex;
 }

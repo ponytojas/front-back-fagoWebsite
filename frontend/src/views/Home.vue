@@ -67,7 +67,9 @@
         <autocomplete
           class="w-1/2 sm:w-1/2 md:w-1/3 xl:w-1/3 lg:w-1/3 rounded-md mb-6"
           :search="search"
+          @submit="handleSubmit"
           placeholder="Busca un artículo"
+          ref="autocomplete"
           aria-label="Busca un artículo"
           style="
             margin-top: -3vh;
@@ -80,7 +82,7 @@
         class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6 container mx-auto"
       >
         <div v-for="article in articles" v-bind:key="article.article_id">
-          <ArticleCard :article="article" class="" />
+          <ArticleCard :article="article" class="" :ref="article.article_id" />
         </div>
       </div>
       <router-link class="m-5 p-5" to="/login">
@@ -109,6 +111,7 @@ export default {
     return {
       loaded: false,
       articles: [],
+      titles: [],
     };
   },
   async mounted() {
@@ -128,12 +131,30 @@ export default {
       if (input.length < 1) {
         return [];
       }
-      return this.articles.filter((article) => {
-        return (
-          article.title.toLowerCase().includes(input.toLowerCase()) ||
-          article.subtitle.toLowerCase().includes(input.toLowerCase())
+      return this.articles
+        .filter((article) => {
+          return (
+            article.title.toLowerCase().includes(input.toLowerCase()) ||
+            article.subtitle.toLowerCase().includes(input.toLowerCase())
+          );
+        })
+        .map(
+          (article) =>
+            "Título: " + article.title + "  /  Subtítulo: " + article.subtitle
         );
-      });
+    },
+    handleSubmit(result) {
+      console.log(result);
+      let title = result.substring(
+        result.indexOf(":") + 2,
+        result.lastIndexOf("  /")
+      );
+
+      let selectedID = this.articles
+        .filter((el) => el.title == title)
+        .map((el) => el.article_id)[0];
+      this.$refs[selectedID][0].openModal();
+      this.$refs.autocomplete.value = "";
     },
   },
 };
