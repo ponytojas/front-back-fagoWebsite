@@ -12,6 +12,7 @@ const getDefaultState = () => {
     user: {},
     isSuperuser: false,
     articles: [],
+    latestUpdate: 1,
   };
 };
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
       return state.user;
     },
     getArticles: (state) => state.articles,
+    getLatestUpdate: (state) => state.latestUpdate,
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -36,6 +38,7 @@ export default new Vuex.Store({
       state.user = user;
     },
     SET_ARTICLES: (state, articles) => (state.articles = articles),
+    SET_UPDATE: (state, date) => (state.latestUpdate = date),
     RESET: (state) => {
       Object.assign(state, getDefaultState());
     },
@@ -53,6 +56,9 @@ export default new Vuex.Store({
     },
     articles: ({ commit }, { articles }) => {
       commit("SET_ARTICLES", articles);
+    },
+    updates: ({ commit }, { date }) => {
+      commit("SET_UPDATE", date);
     },
   },
 });

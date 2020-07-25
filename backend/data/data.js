@@ -98,7 +98,12 @@ const getData = function(){
     return data.webData;
 }
 
+const getLatestUpdate = () => {
+    return globalTimestamp;
+}
+
 module.exports = {
     setData,
-    getData
+    getData,
+    getLatestUpdate
 };

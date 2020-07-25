@@ -118,7 +118,6 @@ export default {
     await axios
       .get("http://localhost:3000/get-data-for-web/")
       .then((response) => {
-        console.log(response.data);
         this.articles = response.data;
       });
     await this.$store
@@ -127,7 +126,6 @@ export default {
   },
   methods: {
     search(input) {
-      console.log(this.articles);
       if (input.length < 1) {
         return [];
       }
@@ -144,7 +142,6 @@ export default {
         );
     },
     handleSubmit(result) {
-      console.log(result);
       let title = result.substring(
         result.indexOf(":") + 2,
         result.lastIndexOf("  /")

@@ -175,8 +175,14 @@ router.get("/secret-route", userMiddleware.isLoggedIn, (req, res, next) => {
 
 router.get("/articles", async (req, res, next) => {
   logger.log("A new request trying to get all articles", 0);
-  res.send(await modelArticles.getAllArticles());
+  res.sendStatus(200).send(await modelArticles.getAllArticles());
   logger.log("All articles sent", 1);
+});
+
+router.get("/updates", async (req, res, next) => {
+  logger.log("A new request trying to get latest update date", 0);
+  res.send(await modelData.getLatestUpdate().toString());
+  logger.log("Update date sent", 1);
 });
 
 router.post(
