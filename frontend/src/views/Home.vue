@@ -133,7 +133,8 @@ export default {
         .filter((article) => {
           return (
             article.title.toLowerCase().includes(input.toLowerCase()) ||
-            article.subtitle.toLowerCase().includes(input.toLowerCase())
+            article.subtitle.toLowerCase().includes(input.toLowerCase()) ||
+            article.tags.find((el) => el.toLowerCase().includes(input))
           );
         })
         .map(
