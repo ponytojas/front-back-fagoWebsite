@@ -28,6 +28,12 @@
         </section>
         <footer class="modal-footer">
           <p name="footer"><b>Etiquetas:</b> {{ tags.join(" // ") }}</p>
+          <br>
+          <p name="footer"><b>Autor:</b> {{ author }}</p>
+          <br>
+          <p name="footer">
+            <b>Última modificación:</b> {{ date }}
+          </p>
         </footer>
         <button
           type="button"
@@ -58,10 +64,18 @@ export default {
     subtitle: String,
     body: String,
     tags: Array,
+    author: String,
+    date: String,
   },
   methods: {
     close() {
       this.$emit("input", !this.value);
+    },
+    beforeMount() {
+      this.$props.date = this.$props.date.slice(
+        0,
+        this.$props.date.indexOf("T")
+      );
     },
   },
 };
@@ -105,7 +119,7 @@ modal-subtitle {
 
 .modal-footer {
   border-top: 1px solid #eeeeee;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
 .modal-body {

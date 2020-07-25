@@ -6,6 +6,8 @@
       :subtitle="article.subtitle"
       :body="article.body"
       :tags="tags"
+      :author="article.author"
+      :date="article.update_date"
     />
     <a href="#" @click="openModal">
       <div class="border rounded-md pb-3 mb-5">
@@ -55,6 +57,10 @@ export default {
   },
   beforeMount() {
     this.tags = this.article.tags;
+    this.article.update_date = this.article.update_date = this.article.update_date.slice(
+      0,
+      this.article.update_date.indexOf("T")
+    );
   },
 };
 </script>
