@@ -9,6 +9,9 @@ import "vue-awesome/icons";
 import Icon from "vue-awesome/components/Icon";
 import Autocomplete from "@trevoreyre/autocomplete-vue";
 import "@trevoreyre/autocomplete-vue/dist/style.css";
+import Nl2br from "vue-nl2br";
+
+Vue.component("nl2br", Nl2br);
 
 Vue.use(VueSpinners);
 Vue.component("v-icon", Icon);
