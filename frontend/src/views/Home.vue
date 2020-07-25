@@ -65,7 +65,7 @@
         class="flex flex-row align-middle justify-center h-auto"
       >
         <autocomplete
-          class="w-1/2 sm:w-1/2 md:w-1/3 xl:w-1/3 lg:w-1/3 rounded-md mb-6"
+          class="w-1/2 sm:w-1/2 md:w-1/3 xl:w-1/3 lg:w-1/3 rounded-md mb-6 searchbar"
           :search="search"
           @submit="handleSubmit"
           placeholder="Busca un artículo"
@@ -157,3 +157,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.searchbar {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+}
+</style>

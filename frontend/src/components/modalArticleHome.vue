@@ -28,12 +28,8 @@
         </section>
         <footer class="modal-footer">
           <p name="footer"><b>Etiquetas:</b> {{ tags.join(" // ") }}</p>
-          <br>
           <p name="footer"><b>Autor:</b> {{ author }}</p>
-          <br>
-          <p name="footer">
-            <b>Última modificación:</b> {{ date }}
-          </p>
+          <p name="footer"><b>Última modificación:</b> {{ date }}</p>
         </footer>
         <button
           type="button"
