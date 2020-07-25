@@ -15,7 +15,7 @@ export default {
     color: String,
   },
   components: {},
-  data() {},
+  data() {return {}},
   methods: {},
 };
 </script>
