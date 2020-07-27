@@ -3,69 +3,57 @@
     <div class="h-auto min-h-screen overflow-x-hidden">
       <div class="bg-green-600 lg:h-64 md:h-56 sm:h-56 h-48">
         <div
-          class="flex flex-row sm:space-x-4 md:space-x-6 lg:space-x-8 xl:space-x-12 container mx-auto text-center justify-center content-center align-middle"
+          class="flex flex-col sm:space-x-4 md:space-x-6 lg:space-x-8 xl:space-x-12 mx-auto text-center justify-center"
         >
-          <a href="#">
-            <div class="flex-col">
-              <div class="flex-row">
-                <v-icon
-                  class="pt-3 mx-10 text-gray-100 text-center align-middle"
-                  scale="2"
-                  name="info-circle"
-                />
-              </div>
-              <div class="flex-row">
-                <p class="text-white text-base">
-                  About me
-                </p>
-              </div>
-            </div>
-          </a>
-          <a href="#">
-            <div class="flex-col">
-              <div class="flex-row">
-                <v-icon
-                  class="pt-3 mx-10 text-gray-100 text-center align-middle"
-                  scale="2"
-                  name="file"
-                />
-              </div>
-              <div class="flex-row">
-                <p class="text-white text-base">
-                  Curriculum
-                </p>
-              </div>
-            </div>
-          </a>
-          <a href="#">
-            <div class="flex-col">
-              <div class="flex-row">
-                <v-icon
-                  class="pt-3 mx-10 text-gray-100 text-center align-middle"
-                  scale="3"
-                  name="graduation-cap"
-                />
-              </div>
-              <div class="flex-row">
-                <p class="text-white text-base">
-                  Final degree project
-                </p>
-              </div>
-            </div>
-          </a>
+          <div class="flex flex-wrap container">
+            <a class="w-1/3" href="#">
+              <v-icon
+                class="pt-3 mx-10 text-gray-100 text-center align-middle"
+                scale="2"
+                name="info-circle"
+              />
+              <p class="text-white text-base">
+                About me
+              </p>
+            </a>
+            <a class="w-1/3" href="#">
+              <v-icon
+                class="pt-3 mx-10 text-gray-100 text-center align-middle"
+                scale="2"
+                name="file"
+              />
+
+              <p class="text-white text-base">
+                Curriculum
+              </p>
+            </a>
+            <a class="w-1/3" href="#">
+              <v-icon
+                class="pt-3 mx-10 text-gray-100 text-center align-middle"
+                scale="3"
+                name="graduation-cap"
+              />
+
+              <p class="text-white text-base">
+                Final degree project
+              </p>
+            </a>
+          </div>
+          <div class="justify-center flex-row">
+            <p
+              class="text-center h-full align-middle text-white text-4xl lg:text-5xl xl:text-6xl font-hairline pt-8"
+            >
+              FagoLambda
+            </p>
+          </div>
         </div>
-        <p
-          class="text-center h-full align-middle text-white text-4xl lg:text-5xl xl:text-6xl font-hairline pt-8"
-        >
-          FagoLambda
-        </p>
       </div>
       <div
         v-if="loaded"
         class="flex flex-row align-middle justify-center h-auto"
       >
         <autocomplete
-          class="w-1/2 sm:w-1/2 md:w-1/3 xl:w-1/3 lg:w-1/3 rounded-md mb-6 searchbar"
+          class="w-1/2 sm:w-1/2 md:w-1/3 xl:w-1/3 lg:w-1/3 rounded-md mb-6 searchbar text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"
           :search="search"
           @submit="handleSubmit"
           placeholder="Busca un artículo"
