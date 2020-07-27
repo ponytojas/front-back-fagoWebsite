@@ -10,7 +10,7 @@
       :date="article.update_date"
     />
     <a href="#" @click="openModal">
-      <div class="border rounded-md pb-3 mb-5">
+      <div class="border border-gray-500 rounded-sm pb-3 mb-5">
         <p
           class="text-xl sm:text-xl md:text-2xl lg:text-3xl text-green-500 pt-3 pb-3"
         >
@@ -48,9 +48,6 @@ export default {
     };
   },
   methods: {
-    showAlert() {
-      alert("Just a debug message");
-    },
     openModal() {
       this.modalOpen = !this.modalOpen;
     },
@@ -66,7 +63,6 @@ export default {
 </script>
 <style scoped>
 .fullCard {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 

@@ -7,7 +7,7 @@
   >
     <div class="flex justify-center align-middle h-screen">
       <div
-        class="self-center w-auto h-auto py-12 px-12 card rounded-md grid grid-rows-4 grid-flow-col gap-4"
+        class="self-center w-auto h-auto py-12 px-12 card border-gray-500 border rounded-md grid grid-rows-4 grid-flow-col gap-4"
       >
         <div class="mt-5">
           <p class="sm:text-xl lg:text-2xl xl:text-3xl text-green-500">
@@ -101,9 +101,8 @@ export default {
 
 <style scoped>
 .card {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  background-color: #fafafa;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  background-color: #fff;
 }
 
 .card:hover {
