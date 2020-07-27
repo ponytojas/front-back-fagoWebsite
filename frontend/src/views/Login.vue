@@ -2,7 +2,7 @@
   <div
     class="h-screen w-screen bg-cover"
     :style="{
-      'background-image': 'url(https://ponytojas.dev/wallpaper-2.jpg)',
+      'background-image': 'url(https://ponytojas.dev/fago-background.png)',
     }"
   >
     <div class="flex justify-center align-middle h-screen">
@@ -14,9 +14,7 @@
             Login
           </p>
         </div>
-        <div
-          class="m-auto grid grid-cols-2"
-        >
+        <div class="m-auto grid grid-cols-2">
           <p class="sm:text-lg lg:text-xl text-green-500 col-span-1">
             Username
           </p>
@@ -27,11 +25,9 @@
             v-on:keyup.enter="login"
           />
         </div>
-        <div
-          class="m-auto grid grid-cols-2"
-        >
+        <div class="m-auto grid grid-cols-2">
           <p class="sm:text-lg lg:text-xl text-green-500 col-span-1">
-            Contraseña
+            Password
           </p>
           <input
             class="col-span-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
@@ -50,7 +46,7 @@
             value="Login"
           >
             <span v-if="!loading">Login</span>
-            <DotLoader color="#fafafa" size="25" v-if="loading" />
+            <DotLoader color="#fafafa" v-bind:size="25" v-if="loading" />
           </button>
           <div>
             <p v-if="msg" :class="colorClass" class="text-xs m-auto">
@@ -93,7 +89,7 @@ export default {
         const user = response.user;
         await this.$store
           .dispatch("login", { token, user })
-          .then(() => this.$router.push("/admin"));
+          .then(() => this.$router.push("admin"));
       } catch (error) {
         this.loading = false;
         this.msg = error.response.data.msg;

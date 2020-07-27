@@ -73,13 +73,19 @@
           <ArticleCard :article="article" class="" :ref="article.article_id" />
         </div>
       </div>
-      <router-link class="m-5 p-5" to="/login">
+      <router-link class="m-5 p-5" to="login">
         <button
           class="m-5 px-10 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-full"
         >
           Login
         </button>
       </router-link>
+      <button
+        class="m-5 px-10 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-full"
+        @click="reset"
+      >
+        Logout
+      </button>
     </div>
   </div>
 </template>
@@ -113,6 +119,9 @@ export default {
       .then(() => (this.loaded = true));
   },
   methods: {
+    reset() {
+      this.$store.dispatch("logout");
+    },
     search(input) {
       if (input.length < 1) {
         return [];

@@ -9,7 +9,7 @@ Vue.use(Vuex);
 const getDefaultState = () => {
   return {
     token: "",
-    user: {},
+    user: null,
     isSuperuser: false,
     articles: [],
     latestUpdate: 1,
@@ -40,7 +40,9 @@ export default new Vuex.Store({
     SET_ARTICLES: (state, articles) => (state.articles = articles),
     SET_UPDATE: (state, date) => (state.latestUpdate = date),
     RESET: (state) => {
+      console.log("Resetting");
       Object.assign(state, getDefaultState());
+      console.log("Resetted");
     },
   },
   actions: {
