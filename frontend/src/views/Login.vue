@@ -1,85 +1,64 @@
 <template>
   <div
-    class="h-full w-full -mx-px bg-cover -px-1"
+    class="h-screen w-screen bg-cover"
     :style="{
-      'background-image': 'url(https://ponytojas.dev/login-background.png)',
+      'background-image': 'url(https://ponytojas.dev/wallpaper-2.jpg)',
     }"
   >
-    <div
-      class="container mx-auto p-64 flex justify-center align-middle h-screen"
-    >
-      <form class="w-full max-w-xl" @keyup.native.enter="login">
-        <div class="md:flex md:items-center mb-6">
-          <div class="md:w-1/4"></div>
-          <div class="md:w-3/4">
-            <p class="text-4xl antialiased text-gray-800">
-              Enter your credentials
+    <div class="flex justify-center align-middle h-screen">
+      <div
+        class="self-center w-auto h-auto py-12 px-12 card rounded-md grid grid-rows-4 grid-flow-col gap-4"
+      >
+        <div class="mt-5">
+          <p class="sm:text-xl lg:text-2xl xl:text-3xl text-green-500">
+            Login
+          </p>
+        </div>
+        <div
+          class="m-auto grid grid-cols-2"
+        >
+          <p class="sm:text-lg lg:text-xl text-green-500 col-span-1">
+            Username
+          </p>
+          <input
+            class="col-span-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+            v-model="username"
+            type="text"
+            v-on:keyup.enter="login"
+          />
+        </div>
+        <div
+          class="m-auto grid grid-cols-2"
+        >
+          <p class="sm:text-lg lg:text-xl text-green-500 col-span-1">
+            Contraseña
+          </p>
+          <input
+            class="col-span-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+            id="password"
+            autocomplete="password"
+            v-model="password"
+            type="password"
+            v-on:keyup.enter="login"
+          />
+        </div>
+        <div class="align-middle m-auto">
+          <button
+            class="shadow bg-green-500 hover:bg-green-400 sm:text-lg xl:text-xl focus:outline-none text-white py-1 px-2 sm:py-1 sm:px-2 xl:py-2 xl:px-4 rounded"
+            type="button"
+            @click="login"
+            value="Login"
+          >
+            <span v-if="!loading">Login</span>
+            <DotLoader color="#fafafa" size="25" v-if="loading" />
+          </button>
+          <div>
+            <p v-if="msg" :class="colorClass" class="text-xs m-auto">
+              {{ msg }}
             </p>
           </div>
         </div>
-        <div class="md:flex md:items-center mb-6">
-          <div class="md:w-1/4">
-            <label
-              class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              for="username"
-              >Username</label
-            >
-          </div>
-          <div class="md:w-3/4">
-            <input
-              class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
-              id="username"
-              v-model="username"
-              type="text"
-              v-on:keyup.enter="login"
-            />
-          </div>
-        </div>
-        <div class="md:flex md:items-center mb-6">
-          <div class="md:w-1/4">
-            <label
-              class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              for="password"
-              >Password</label
-            >
-          </div>
-          <div class="md:w-3/4">
-            <input
-              class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
-              id="password"
-              autocomplete="password"
-              v-model="password"
-              type="password"
-              v-on:keyup.enter="login"
-            />
-          </div>
-        </div>
-        <div class="md:flex md:items-center">
-          <div class="md:w-1/4"></div>
-          <div class="md:w-3/4">
-            <button
-              class="shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded"
-              type="button"
-              @click="login"
-              value="Login"
-            >
-              <span v-if="!loading">Login</span>
-              <DotLoader
-                class="flex flex-col items-center justify-center py-2 px-4"
-                color="#fafafa"
-                size="25"
-                v-if="loading"
-              />
-            </button>
-          </div>
-        </div>
-        <div class="md:flex md:items-center mt-5">
-          <div class="md:w-1/4"></div>
-          <div class="md:w-3/4">
-            <p v-if="msg" :class="colorClass">{{ msg }}</p>
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -124,4 +103,14 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background-color: #fff;
+}
+
+.card:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+</style>
