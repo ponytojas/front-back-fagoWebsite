@@ -1,6 +1,6 @@
 <template>
-  <a href="#" class="card">
-    <div class="border rounded">
+  <a href="#">
+    <div class="border rounded-md">
       <v-icon :class="color" class="pt-3" scale="3" :name="icon" />
       <p class="text-xl pt-3 pb-3">{{ text }}</p>
     </div>
@@ -13,7 +13,6 @@ export default {
     icon: String,
     text: String,
     color: String,
-    users: Boolean,
   },
   components: {},
   data() {
