@@ -111,7 +111,10 @@ export default {
   async mounted() {
     await axios
       .get("http://localhost:3000/get-data-for-web/")
-      .then((response) => {
+      .then(async (response) => {
+        await this.$store
+          .dispatch("articles", this.articles)
+          .then(() => (this.loaded = true));
         this.articles = response.data;
       });
     await this.$store

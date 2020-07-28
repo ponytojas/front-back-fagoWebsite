@@ -39,7 +39,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.adminOnly)) {
     let user = store.getters.getUser;
-    console.log(user);
     if (user) next();
     else next({ name: "Home" });
   } else {

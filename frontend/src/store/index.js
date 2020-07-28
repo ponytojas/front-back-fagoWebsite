@@ -27,7 +27,9 @@ export default new Vuex.Store({
     getUser: (state) => {
       return state.user;
     },
-    getArticles: (state) => state.articles,
+    getArticles: (state) => {
+      return state.articles;
+    },
     getLatestUpdate: (state) => state.latestUpdate,
   },
   mutations: {
@@ -37,7 +39,9 @@ export default new Vuex.Store({
     SET_USER: (state, user) => {
       state.user = user;
     },
-    SET_ARTICLES: (state, articles) => (state.articles = articles),
+    SET_ARTICLES: (state, articles) => {
+      state.articles = articles;
+    },
     SET_UPDATE: (state, date) => (state.latestUpdate = date),
     RESET: (state) => {
       console.log("Resetting");
