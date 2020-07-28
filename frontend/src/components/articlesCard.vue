@@ -21,7 +21,7 @@
           v-for="(tag, index) in tags"
           :key="index"
           class="text-xs pt-3 pb-5"
-          >· {{ tag }} //
+          ><span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#{{ tag }}</span>
         </span>
       </div>
     </a>

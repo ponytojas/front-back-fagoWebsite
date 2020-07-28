@@ -27,7 +27,14 @@
           <nl2br name="body" tag="p" :text="body" />
         </section>
         <footer class="modal-footer">
-          <p name="footer"><b>Etiquetas:</b> {{ tags.join(" // ") }}</p>
+          <div>
+            <span
+              v-for="(tag, index) in tags"
+              :key="index"
+              class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+              >#{{ tag }}
+            </span>
+          </div>
           <p name="footer"><b>Autor:</b> {{ author }}</p>
           <p name="footer"><b>Última modificación:</b> {{ date }}</p>
         </footer>
