@@ -12,16 +12,20 @@
     <a href="#" @click="openModal">
       <div class="border border-gray-500 rounded-sm pb-3 mb-5">
         <p
-          class="text-xl sm:text-xl md:text-2xl lg:text-3xl text-green-500 pt-3 pb-3"
+          class="text-xl sm:text-xl md:text-2xl lg:text-3xl text-green-500 pt-3 pb-1"
         >
           {{ article.title }}
         </p>
-        <p class="text-lg text-gray-800 pt-3 pb-3">{{ article.subtitle }}</p>
+        <p class="text-lg text-green-700 pt-1 pb-3">{{ article.subtitle }}</p>
+        <p class="text-base text-gray-800  pb-3 px-5">{{ textPreview }}</p>
         <span
           v-for="(tag, index) in tags"
           :key="index"
           class="text-xs pt-3 pb-5"
-          ><span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#{{ tag }}</span>
+          ><span
+            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+            >#{{ tag }}</span
+          >
         </span>
       </div>
     </a>
@@ -45,6 +49,7 @@ export default {
     return {
       tags: [],
       modalOpen: false,
+      textPreview: "",
     };
   },
   methods: {
@@ -58,6 +63,9 @@ export default {
       0,
       this.article.update_date.indexOf("T")
     );
+   
+    this.textPreview = this.article.body.split(/\s+/).slice(0, 20).join(' ') + '...'
+
   },
 };
 </script>
