@@ -1,7 +1,14 @@
 <template>
-  <div class="flex justify-center align-middle h-screen">
+  <div class="flex justify-center align-middle h-screen bg-yellow-400">
+    <AdminModal
+      v-model="articleModal"
+      title="Exameple"
+      subtitle="Example"
+      author="Example"
+      date="Example"
+    />
     <div
-      class="self-center w-11/12 lg:w-9/12 h-auto py-12 px-12 card border-gray-500 border rounded-sm"
+      class="self-center w-11/12 lg:w-9/12 h-auto py-12 px-12 card border-gray-500 rounded-lg"
     >
       <p class="text-4xl">Panel de administración</p>
       <hr class="w-3/4 m-auto mt-2" />
@@ -44,11 +51,13 @@
               />
             </div>
             <div class="grid grid-rows-1 gap-2">
-              <AdminSetting
-                icon="edit"
-                text="Editar artículo"
-                color="text-orange-500"
-              />
+              <a @click="openModal(true)" class="cursor-pointer">
+                <AdminSetting
+                  icon="edit"
+                  text="Editar artículo"
+                  color="text-orange-500"
+                />
+              </a>
             </div>
             <div class="grid grid-rows-1 gap-2">
               <AdminSetting
@@ -61,10 +70,10 @@
         </div>
         <div class="row-span-1 align-bottom self-end">
           <button
-            class="m-5 px-10 py-2 bg-green-500 hover:bg-green-700 text-white rounded-full"
+            class="shadow bg-green-500 hover:bg-green-400 sm:text-lg xl:text-xl focus:outline-none text-white py-1 px-2 sm:py-1 sm:px-2 xl:py-2 xl:px-4 rounded"
             @click="reset"
           >
-            Logout
+            Cerrar sesión
           </button>
         </div>
       </div>
@@ -74,18 +83,31 @@
 
 <script>
 import AdminSetting from "../components/adminSetting";
+import AdminModal from "../components/adminModal";
+
 export default {
   name: "Admin",
   components: {
     AdminSetting,
+    AdminModal,
   },
   data() {
-    return {};
+    return {
+      articleModal: false,
+      userModal: false,
+    };
   },
   methods: {
-    beforeMount() {
-      console.log(`this.$el doesn't exist yet, but it will soon!`);
+    async mounted() {
+      this.articles = await this.$store.getters.getArticles;
+      console.log("All articles recovered");
     },
+
+    openModal(article) {
+      if (article) this.articleModal = !this.articleModal;
+      else this.userModal = !this.userModal;
+    },
+
     reset() {
       this.$store.dispatch("logout").then(() => this.$router.push("/"));
     },
