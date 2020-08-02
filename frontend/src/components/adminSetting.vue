@@ -20,7 +20,6 @@ export default {
 };
 </script>
 <style scoped>
-
 .card {
   background-color: #fafafa;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);

@@ -42,11 +42,9 @@
 </template>
 
 <script>
-
 export default {
   name: "modal",
-  components: {
-  },
+  components: {},
   props: {
     value: {
       required: true,

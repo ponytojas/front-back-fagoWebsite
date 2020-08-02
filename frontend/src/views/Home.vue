@@ -67,11 +67,24 @@
         />
       </div>
       <div
+        v-if="loaded"
         class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6 container mx-auto"
       >
         <div v-for="article in articles" v-bind:key="article.article_id">
           <ArticleCard :article="article" class="" :ref="article.article_id" />
         </div>
+      </div>
+      <div
+        v-if="!loaded"
+        class="flex flex-row align-middle justify-center h-auto pt-12 pb-24"
+      >
+        <PacmanLoader color="#38a169" :size="64" margin="5" v-if="!loaded" />
+      </div>
+      <div
+        v-if="!loaded"
+        class="flex flex-row align-middle justify-center h-auto pt-12 pb-24"
+      >
+        <p class="text-3xl">Cargando artículos</p>
       </div>
       <router-link class="m-5 p-5" to="login">
         <button
@@ -112,7 +125,7 @@ export default {
     await axios
       .get("http://localhost:3000/get-data-for-web/")
       .then(async (response) => {
-        this.articles = await JSON.parse(JSON.stringify(response.data))
+        this.articles = await JSON.parse(JSON.stringify(response.data));
         await this.$store
           .dispatch("articles", this.articles)
           .then(() => (this.loaded = true));
