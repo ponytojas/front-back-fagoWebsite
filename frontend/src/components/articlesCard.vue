@@ -7,7 +7,7 @@
       :body="article.body"
       :tags="tags"
       :author="article.author"
-      :date="article.update_date"
+      :date="dateToShow"
     />
     <a href="#" @click="openModal">
       <div class="border border-gray-500 rounded-sm pb-3 mb-5">
@@ -17,7 +17,7 @@
           {{ article.title }}
         </p>
         <p class="text-lg text-green-700 pt-1 pb-3">{{ article.subtitle }}</p>
-        <p class="text-base text-gray-800  pb-3 px-5">{{ textPreview }}</p>
+        <p class="text-base text-gray-800 pb-3 px-5">{{ textPreview }}</p>
         <span
           v-for="(tag, index) in tags"
           :key="index"
@@ -50,6 +50,7 @@ export default {
       tags: [],
       modalOpen: false,
       textPreview: "",
+      dateToShow: "",
     };
   },
   methods: {
@@ -59,13 +60,12 @@ export default {
   },
   beforeMount() {
     this.tags = this.article.tags;
-    this.article.update_date = this.article.update_date = this.article.update_date.slice(
+    this.dateToShow = this.article.update_date.slice(
       0,
       this.article.update_date.indexOf("T")
     );
-   
-    this.textPreview = this.article.body.split(/\s+/).slice(0, 20).join(' ') + '...'
-
+    this.textPreview =
+      this.article.body.split(/\s+/).slice(0, 20).join(" ") + "...";
   },
 };
 </script>

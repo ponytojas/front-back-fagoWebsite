@@ -20,6 +20,7 @@ export default new Vuex.Store({
   strict: true,
   plugins: [createPersistedState()],
   state: getDefaultState(),
+
   getters: {
     isLoggedIn: (state) => {
       return state.token;
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     },
     getLatestUpdate: (state) => state.latestUpdate,
   },
+
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token;
@@ -49,21 +51,23 @@ export default new Vuex.Store({
       console.log("Resetted");
     },
   },
+
   actions: {
     login: ({ commit }, { token, user }) => {
       commit("SET_TOKEN", token);
       commit("SET_USER", user);
-
-      // set auth header
       Axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     },
+
     logout: ({ commit }) => {
       commit("RESET", "");
     },
-    articles: ({ commit }, { articles }) => {
+
+    articles: ({ commit }, articles) => {
       commit("SET_ARTICLES", articles);
     },
-    updates: ({ commit }, { date }) => {
+
+    updates: ({ commit }, date) => {
       commit("SET_UPDATE", date);
     },
   },

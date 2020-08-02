@@ -112,14 +112,11 @@ export default {
     await axios
       .get("http://localhost:3000/get-data-for-web/")
       .then(async (response) => {
+        this.articles = await JSON.parse(JSON.stringify(response.data))
         await this.$store
           .dispatch("articles", this.articles)
           .then(() => (this.loaded = true));
-        this.articles = response.data;
       });
-    await this.$store
-      .dispatch("articles", this.articles)
-      .then(() => (this.loaded = true));
   },
   methods: {
     reset() {
