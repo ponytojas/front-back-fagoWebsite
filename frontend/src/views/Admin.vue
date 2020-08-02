@@ -44,7 +44,7 @@
           <p class="text-2xl mt-8 pb-1">Gestión de artículos</p>
           <div class="grid grid-cols-3 gap-4 mt-5 col-span-3">
             <div class="grid grid-rows-1 gap-2">
-              <a @click="this.$router.push('login')" class="cursor-pointer">
+              <a @click="goToEditor('')" class="cursor-pointer">
                 <AdminSetting
                   icon="plus-circle"
                   text="Crear artículo"
@@ -101,9 +101,7 @@ export default {
     };
   },
   async mounted() {
-    console.log("Starting to get articles");
     this.articles = await this.$store.getters.getArticles;
-    console.log("All articles recovered");
   },
 
   methods: {
