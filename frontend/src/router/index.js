@@ -30,6 +30,14 @@ const routes = [
       adminOnly: true,
     },
   },
+  {
+    path: "/editor",
+    name: "Editor",
+    component: () => import("../views/Editor"),
+    meta: {
+      adminOnly: true,
+    },
+  },
 ];
 
 const router = new VueRouter({

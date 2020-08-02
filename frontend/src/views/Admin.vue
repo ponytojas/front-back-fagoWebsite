@@ -44,11 +44,13 @@
           <p class="text-2xl mt-8 pb-1">Gestión de artículos</p>
           <div class="grid grid-cols-3 gap-4 mt-5 col-span-3">
             <div class="grid grid-rows-1 gap-2">
-              <AdminSetting
-                icon="plus-circle"
-                text="Crear artículo"
-                color="text-blue-600"
-              />
+              <a @click="this.$router.push('login')" class="cursor-pointer">
+                <AdminSetting
+                  icon="plus-circle"
+                  text="Crear artículo"
+                  color="text-blue-600"
+                />
+              </a>
             </div>
             <div class="grid grid-rows-1 gap-2">
               <a @click="openModal(true)" class="cursor-pointer">
@@ -95,12 +97,23 @@ export default {
     return {
       articleModal: false,
       userModal: false,
+      articles: [],
     };
   },
+  async mounted() {
+    console.log("Starting to get articles");
+    this.articles = await this.$store.getters.getArticles;
+    console.log("All articles recovered");
+  },
+
   methods: {
-    async mounted() {
-      this.articles = await this.$store.getters.getArticles;
-      console.log("All articles recovered");
+    goToEditor(article_id) {
+      if (article_id)
+        this.$router.push({
+          name: "editor",
+          params: { article_id: article_id },
+        });
+      else this.$router.push("editor");
     },
 
     openModal(article) {
