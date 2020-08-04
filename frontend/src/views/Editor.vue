@@ -7,7 +7,7 @@
           :class="{ 'is-active': isActive.bold() }"
           @click="commands.bold"
         >
-          <Icon name="bold" />
+          <v-icon class="text-black h-10 mx-1" name="bold" />
         </button>
 
         <button
@@ -15,7 +15,7 @@
           :class="{ 'is-active': isActive.italic() }"
           @click="commands.italic"
         >
-          <Icon name="italic" />
+          <v-icon class="text-black h-10 mx-1" name="italic" />
         </button>
 
         <button
@@ -23,7 +23,7 @@
           :class="{ 'is-active': isActive.strike() }"
           @click="commands.strike"
         >
-          <Icon name="strike" />
+          <v-icon class="text-black h-10 mx-1" name="strikethrough" />
         </button>
 
         <button
@@ -31,15 +31,7 @@
           :class="{ 'is-active': isActive.underline() }"
           @click="commands.underline"
         >
-          <Icon name="underline" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.code() }"
-          @click="commands.code"
-        >
-          <Icon name="code" />
+          <v-icon class="text-black h-10 mx-1" name="underline" />
         </button>
 
         <button
@@ -47,7 +39,7 @@
           :class="{ 'is-active': isActive.paragraph() }"
           @click="commands.paragraph"
         >
-          <Icon name="paragraph" />
+          <v-icon class="text-black h-10 mx-1" name="paragraph" />
         </button>
 
         <button
@@ -79,7 +71,7 @@
           :class="{ 'is-active': isActive.bullet_list() }"
           @click="commands.bullet_list"
         >
-          <Icon name="ul" />
+          <v-icon class="text-black h-10 mx-1" name="list-ul" />
         </button>
 
         <button
@@ -87,7 +79,7 @@
           :class="{ 'is-active': isActive.ordered_list() }"
           @click="commands.ordered_list"
         >
-          <Icon name="ol" />
+          <v-icon class="text-black h-10 mx-1" name="list-ol" />
         </button>
 
         <button
@@ -95,27 +87,35 @@
           :class="{ 'is-active': isActive.blockquote() }"
           @click="commands.blockquote"
         >
-          <Icon name="quote" />
+          <v-icon class="text-black h-10 mx-1" name="quote" />
         </button>
 
         <button
           class="menubar__button"
-          :class="{ 'is-active': isActive.code_block() }"
-          @click="commands.code_block"
+          @click="showImagePrompt(commands.image)"
         >
-          <Icon name="code" />
-        </button>
-
-        <button class="menubar__button" @click="commands.horizontal_rule">
-          <Icon name="hr" />
+          <v-icon class="text-black h-10 mx-1" name="image" />
         </button>
 
         <button class="menubar__button" @click="commands.undo">
-          <Icon name="undo" />
+          <v-icon class="text-black h-10 mx-1" name="undo" />
         </button>
 
         <button class="menubar__button" @click="commands.redo">
-          <Icon name="redo" />
+          <v-icon class="text-black h-10 mx-1" name="redo" />
+        </button>
+
+        <button
+          class="menubar__button"
+          @click="
+            commands.createTable({
+              rowsCount: 3,
+              colsCount: 3,
+              withHeaderRow: false,
+            })
+          "
+        >
+          <v-icon class="text-black h-10 mx-1" name="table" />
         </button>
       </div>
     </editor-menu-bar>
@@ -125,7 +125,6 @@
 </template>
 
 <script>
-import Icon from "../components/Icon";
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Blockquote,
@@ -139,6 +138,11 @@ import {
   TodoItem,
   TodoList,
   Bold,
+  Image,
+  Table,
+  TableHeader,
+  TableCell,
+  TableRow,
   Code,
   Italic,
   Link,
@@ -151,7 +155,6 @@ export default {
   components: {
     EditorContent,
     EditorMenuBar,
-    Icon,
   },
   data() {
     return {
@@ -168,12 +171,19 @@ export default {
           new TodoItem(),
           new TodoList(),
           new Link(),
+          new Image(),
           new Bold(),
           new Code(),
           new Italic(),
           new Strike(),
           new Underline(),
           new History(),
+          new Table({
+            resizable: true,
+          }),
+          new TableHeader(),
+          new TableCell(),
+          new TableRow(),
         ],
         content: `
           <h2>
@@ -202,6 +212,14 @@ export default {
   },
   beforeDestroy() {
     this.editor.destroy();
+  },
+  methods: {
+    showImagePrompt(command) {
+      const src = prompt("Enter the url of your image here");
+      if (src !== null) {
+        command({ src });
+      }
+    },
   },
 };
 </script>
