@@ -1,224 +1,48 @@
 <template>
-  <div class="editor">
-    <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-      <div class="menubar">
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.bold() }"
-          @click="commands.bold"
-        >
-          <v-icon class="text-black h-10 mx-1" name="bold" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.italic() }"
-          @click="commands.italic"
-        >
-          <v-icon class="text-black h-10 mx-1" name="italic" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.strike() }"
-          @click="commands.strike"
-        >
-          <v-icon class="text-black h-10 mx-1" name="strikethrough" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.underline() }"
-          @click="commands.underline"
-        >
-          <v-icon class="text-black h-10 mx-1" name="underline" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.paragraph() }"
-          @click="commands.paragraph"
-        >
-          <v-icon class="text-black h-10 mx-1" name="paragraph" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 1 }) }"
-          @click="commands.heading({ level: 1 })"
-        >
-          H1
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 2 }) }"
-          @click="commands.heading({ level: 2 })"
-        >
-          H2
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 3 }) }"
-          @click="commands.heading({ level: 3 })"
-        >
-          H3
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.bullet_list() }"
-          @click="commands.bullet_list"
-        >
-          <v-icon class="text-black h-10 mx-1" name="list-ul" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.ordered_list() }"
-          @click="commands.ordered_list"
-        >
-          <v-icon class="text-black h-10 mx-1" name="list-ol" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.blockquote() }"
-          @click="commands.blockquote"
-        >
-          <v-icon class="text-black h-10 mx-1" name="quote" />
-        </button>
-
-        <button
-          class="menubar__button"
-          @click="showImagePrompt(commands.image)"
-        >
-          <v-icon class="text-black h-10 mx-1" name="image" />
-        </button>
-
-        <button class="menubar__button" @click="commands.undo">
-          <v-icon class="text-black h-10 mx-1" name="undo" />
-        </button>
-
-        <button class="menubar__button" @click="commands.redo">
-          <v-icon class="text-black h-10 mx-1" name="redo" />
-        </button>
-
-        <button
-          class="menubar__button"
-          @click="
-            commands.createTable({
-              rowsCount: 3,
-              colsCount: 3,
-              withHeaderRow: false,
-            })
-          "
-        >
-          <v-icon class="text-black h-10 mx-1" name="table" />
-        </button>
+  <div class="w-screen h-screen bg-yellow-400 absolute overflow-auto">
+    <div class="flex justify-center align-middle h-full bg-yellow-400 relative">
+      <div class="mt-12 h-full w-9/12 mb-12">
+        <vue-editor v-model="content" class="bg-white" />
       </div>
-    </editor-menu-bar>
-
-    <editor-content class="editor__content" :editor="editor" />
+    </div>
   </div>
 </template>
 
 <script>
-import { Editor, EditorContent, EditorMenuBar } from "tiptap";
-import {
-  Blockquote,
-  CodeBlock,
-  HardBreak,
-  Heading,
-  HorizontalRule,
-  OrderedList,
-  BulletList,
-  ListItem,
-  TodoItem,
-  TodoList,
-  Bold,
-  Image,
-  Table,
-  TableHeader,
-  TableCell,
-  TableRow,
-  Code,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-  History,
-} from "tiptap-extensions";
+import { VueEditor } from "vue2-editor";
+import Axios from "axios";
 
 export default {
   components: {
-    EditorContent,
-    EditorMenuBar,
+    VueEditor,
   },
   data() {
     return {
-      editor: new Editor({
-        extensions: [
-          new Blockquote(),
-          new BulletList(),
-          new CodeBlock(),
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
-          new HorizontalRule(),
-          new ListItem(),
-          new OrderedList(),
-          new TodoItem(),
-          new TodoList(),
-          new Link(),
-          new Image(),
-          new Bold(),
-          new Code(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new History(),
-          new Table({
-            resizable: true,
-          }),
-          new TableHeader(),
-          new TableCell(),
-          new TableRow(),
-        ],
-        content: `
-          <h2>
-            Hi there,
-          </h2>
-          <p>
-            this is a very <em>basic</em> example of tiptap.
-          </p>
-          <pre><code>body { display: none; }</code></pre>
-          <ul>
-            <li>
-              A regular list
-            </li>
-            <li>
-              With regular items
-            </li>
-          </ul>
-          <blockquote>
-            It's amazing 👏
-            <br />
-            – mom
-          </blockquote>
-        `,
-      }),
+      content: "<h1>Some initial content</h1>",
     };
   },
-  beforeDestroy() {
-    this.editor.destroy();
-  },
   methods: {
-    showImagePrompt(command) {
-      const src = prompt("Enter the url of your image here");
-      if (src !== null) {
-        command({ src });
-      }
+    handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {
+      // An example of using FormData
+      // NOTE: Your key could be different such as:
+      // formData.append('file', file)
+
+      var formData = new FormData();
+      formData.append("image", file);
+
+      Axios({
+        url: "https://fakeapi.yoursite.com/images",
+        method: "POST",
+        data: formData,
+      })
+        .then((result) => {
+          let url = result.data.url; // Get url from response
+          Editor.insertEmbed(cursorLocation, "image", url);
+          resetUploader();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
