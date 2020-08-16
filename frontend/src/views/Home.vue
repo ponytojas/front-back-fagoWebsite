@@ -119,19 +119,50 @@ export default {
       loaded: false,
       articles: [],
       titles: [],
+      nertworkError: false,
     };
   },
-  async mounted() {
-    await axios
-      .get("http://localhost:3000/get-data-for-web/")
-      .then(async (response) => {
-        this.articles = await JSON.parse(JSON.stringify(response.data));
-        await this.$store
-          .dispatch("articles", this.articles)
-          .then(() => (this.loaded = true));
-      });
+  mounted() {
+    this.getArticles();
   },
   methods: {
+    async getArticles() {
+      await axios
+        .get("http://localhost:3000/get-data-for-web/", { timeout: 3500 })
+        .then(async (response) => {
+          this.articles = await JSON.parse(JSON.stringify(response.data));
+          await this.$store
+            .dispatch("articles", this.articles)
+            .then(() => (this.loaded = true));
+        })
+        .catch((err) => {
+          if (err.code == "ECONNABORTED") {
+            this.getArticles;
+          } else if (err.message == "Network Error") {
+            if (!this.nertworkError) {
+              setTimeout(() => {
+                this.$toasted.show(
+                  "Estamos experimentando algunos problemas, lamentamos las molestias, seguimos intentando carga el contenido",
+                  {
+                    theme: "outline",
+                    position: "bottom-center",
+                    duration: 15000,
+                    keepOnHover: true,
+                  }
+                );
+              }, 2000);
+              this.nertworkError = true;
+            } else this.sleep(2000).then(() => this.getArticles);
+          } else {
+            console.log(err.code);
+            console.log(err.message);
+            console.log(err);
+          }
+        });
+    },
+    sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
     reset() {
       this.$store.dispatch("logout");
     },
@@ -171,5 +202,13 @@ export default {
 <style scoped>
 .searchbar {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+}
+.toasted {
+  background-color: #38a169 !important;
+  color: #38a169 !important;
+}
+.bubble {
+  background-color: #38a169 !important;
+  color: #38a169 !important;
 }
 </style>
