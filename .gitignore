@@ -111,3 +111,6 @@ dist
 config.json
 ./*/.git
 
+*/uploads
+
+uploads/*
