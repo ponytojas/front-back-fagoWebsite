@@ -152,7 +152,8 @@ export default {
                 );
               }, 2000);
               this.nertworkError = true;
-            } else this.sleep(2000).then(() => this.getArticles);
+              this.getArticles()
+            } else this.sleep(2000).then(() => this.getArticles());
           } else {
             console.log(err.code);
             console.log(err.message);
