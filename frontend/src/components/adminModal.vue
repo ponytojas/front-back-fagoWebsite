@@ -2,7 +2,7 @@
   <div class="modal-backdrop" v-show="value">
     <transition name="fade" v-show="value">
       <div
-        class="modal"
+        class="modal w-1/3"
         role="dialog"
         aria-labelledby="modalTitle"
         aria-describedby="modalDescription"
@@ -23,18 +23,8 @@
             </p>
           </div>
         </header>
-        <section class="modal-body" id="modalDescription">
-          <nl2br name="body" tag="p" :text="body" />
-        </section>
+
         <footer class="modal-footer">
-          <div>
-            <span
-              v-for="(tag, index) in tags"
-              :key="index"
-              class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-              >#{{ tag }}
-            </span>
-          </div>
           <p name="footer"><b>Autor:</b> {{ author }}</p>
           <p name="footer"><b>Última modificación:</b> {{ date }}</p>
         </footer>
@@ -52,21 +42,15 @@
 </template>
 
 <script>
-import Nl2br from "vue-nl2br";
-
 export default {
   name: "modal",
-  components: {
-    Nl2br,
-  },
+  components: {},
   props: {
     value: {
       required: true,
     },
     title: String,
     subtitle: String,
-    body: String,
-    tags: Array,
     author: String,
     date: String,
   },
@@ -102,7 +86,7 @@ export default {
   background: #fafafa;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  width: 85%;
+
   padding: 10px;
 }
 

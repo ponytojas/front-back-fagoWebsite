@@ -67,19 +67,38 @@
         />
       </div>
       <div
+        v-if="loaded"
         class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6 container mx-auto"
       >
         <div v-for="article in articles" v-bind:key="article.article_id">
           <ArticleCard :article="article" class="" :ref="article.article_id" />
         </div>
       </div>
-      <router-link class="m-5 p-5" to="/login">
+      <div
+        v-if="!loaded"
+        class="flex flex-row align-middle justify-center h-auto pt-12 pb-24"
+      >
+        <PacmanLoader color="#38a169" :size="64" margin="5" v-if="!loaded" />
+      </div>
+      <div
+        v-if="!loaded"
+        class="flex flex-row align-middle justify-center h-auto pt-12 pb-24"
+      >
+        <p class="text-3xl">Cargando artículos</p>
+      </div>
+      <router-link class="m-5 p-5" to="login">
         <button
           class="m-5 px-10 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-full"
         >
           Login
         </button>
       </router-link>
+      <button
+        class="m-5 px-10 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-full"
+        @click="reset"
+      >
+        Logout
+      </button>
     </div>
   </div>
 </template>
@@ -100,19 +119,54 @@ export default {
       loaded: false,
       articles: [],
       titles: [],
+      nertworkError: false,
     };
   },
-  async mounted() {
-    await axios
-      .get("http://localhost:3000/get-data-for-web/")
-      .then((response) => {
-        this.articles = response.data;
-      });
-    await this.$store
-      .dispatch("articles", this.articles)
-      .then(() => (this.loaded = true));
+  mounted() {
+    this.getArticles();
   },
   methods: {
+    async getArticles() {
+      await axios
+        .get("http://localhost:3000/get-data-for-web/", { timeout: 3500 })
+        .then(async (response) => {
+          this.articles = await JSON.parse(JSON.stringify(response.data));
+          await this.$store
+            .dispatch("articles", this.articles)
+            .then(() => (this.loaded = true));
+        })
+        .catch((err) => {
+          if (err.code == "ECONNABORTED") {
+            this.getArticles;
+          } else if (err.message == "Network Error") {
+            if (!this.nertworkError) {
+              setTimeout(() => {
+                this.$toasted.show(
+                  "Estamos experimentando algunos problemas, lamentamos las molestias, seguimos intentando carga el contenido",
+                  {
+                    theme: "outline",
+                    position: "bottom-center",
+                    duration: 15000,
+                    keepOnHover: true,
+                  }
+                );
+              }, 2000);
+              this.nertworkError = true;
+              this.getArticles()
+            } else this.sleep(2000).then(() => this.getArticles());
+          } else {
+            console.log(err.code);
+            console.log(err.message);
+            console.log(err);
+          }
+        });
+    },
+    sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
+    reset() {
+      this.$store.dispatch("logout");
+    },
     search(input) {
       if (input.length < 1) {
         return [];
@@ -149,5 +203,13 @@ export default {
 <style scoped>
 .searchbar {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+}
+.toasted {
+  background-color: #38a169 !important;
+  color: #38a169 !important;
+}
+.bubble {
+  background-color: #38a169 !important;
+  color: #38a169 !important;
 }
 </style>

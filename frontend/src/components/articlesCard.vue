@@ -7,21 +7,25 @@
       :body="article.body"
       :tags="tags"
       :author="article.author"
-      :date="article.update_date"
+      :date="dateToShow"
     />
     <a href="#" @click="openModal">
-      <div class="border rounded-md pb-3 mb-5">
+      <div class="border border-gray-500 rounded-sm pb-3 mb-5">
         <p
-          class="text-xl sm:text-xl md:text-2xl lg:text-3xl text-green-500 pt-3 pb-3"
+          class="text-xl sm:text-xl md:text-2xl lg:text-3xl text-green-500 pt-3 pb-1"
         >
           {{ article.title }}
         </p>
-        <p class="text-lg text-gray-800 pt-3 pb-3">{{ article.subtitle }}</p>
+        <p class="text-lg text-green-700 pt-1 pb-3">{{ article.subtitle }}</p>
+        <p class="text-base text-gray-800 pb-3 px-5">{{ textPreview }}</p>
         <span
           v-for="(tag, index) in tags"
           :key="index"
           class="text-xs pt-3 pb-5"
-          >· {{ tag }} //
+          ><span
+            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+            >#{{ tag }}</span
+          >
         </span>
       </div>
     </a>
@@ -45,28 +49,28 @@ export default {
     return {
       tags: [],
       modalOpen: false,
+      textPreview: "",
+      dateToShow: "",
     };
   },
   methods: {
-    showAlert() {
-      alert("Just a debug message");
-    },
     openModal() {
       this.modalOpen = !this.modalOpen;
     },
   },
   beforeMount() {
     this.tags = this.article.tags;
-    this.article.update_date = this.article.update_date = this.article.update_date.slice(
+    this.dateToShow = this.article.update_date.slice(
       0,
       this.article.update_date.indexOf("T")
     );
+    this.textPreview =
+      this.article.body.split(/\s+/).slice(0, 20).join(" ") + "...";
   },
 };
 </script>
 <style scoped>
 .fullCard {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
