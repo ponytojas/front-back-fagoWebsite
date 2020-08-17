@@ -1,6 +1,6 @@
 <template>
   <div class="border rounded-md card">
-    <v-icon :class="color" class="pt-3" scale="3" :name="icon" />
+    <i class="material-icons md-36 mt-4" :class="color"> {{ icon }} </i>
     <p class="text-xl pt-3 pb-3">{{ text }}</p>
   </div>
 </template>
@@ -11,6 +11,11 @@ export default {
     icon: String,
     text: String,
     color: String,
+  },
+  computed: {
+    style() {
+      return "color: " + this.color;
+    },
   },
   components: {},
   data() {
