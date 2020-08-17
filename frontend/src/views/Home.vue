@@ -7,26 +7,29 @@
         >
           <div class="flex flex-wrap container">
             <a class="w-1/3" href="#">
-              <i class="material-icons md-36 mt-4" style="color: #fafafa;"
-                >info</i
-              >
+              <i
+                class="material-icons md-36 mt-4 mdi mdi-information-outline"
+                style="color: #fafafa;"
+              />
               <p class="text-white text-base">
                 About me
               </p>
             </a>
             <a class="w-1/3" href="#">
-              <i class="material-icons md-36 mt-4" style="color: #fafafa;"
-                >text_snippet</i
-              >
+              <i
+                class="material-icons md-36 mt-4 mdi mdi-file-document-outline"
+                style="color: #fafafa;"
+              />
 
               <p class="text-white text-base">
                 Curriculum
               </p>
             </a>
             <a class="w-1/3" href="#">
-              <i class="material-icons md-36 mt-4" style="color: #fafafa;"
-                >science</i
-              >
+              <i
+                class="material-icons md-36 mt-4 mdi mdi-school-outline"
+                style="color: #fafafa;"
+              />
 
               <p class="text-white text-base">
                 Final degree project

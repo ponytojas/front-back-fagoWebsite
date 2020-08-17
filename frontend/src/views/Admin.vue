@@ -18,21 +18,21 @@
           <div class="grid grid-cols-3 gap-4 mt-5 col-span-3">
             <div class="grid grid-rows-1 gap-2">
               <AdminSetting
-                icon="person_add"
+                icon="account-plus-outline"
                 text="Registrar usuario"
                 color="text-green-600"
               />
             </div>
             <div class="grid grid-rows-1 gap-2">
               <AdminSetting
-                icon="admin_panel_settings"
+                icon="account-edit"
                 text="Editar usuario"
                 color="text-pink-500"
               />
             </div>
             <div class="grid grid-rows-1 gap-2">
               <AdminSetting
-                icon="person_remove"
+                icon="account-minus-outline"
                 text="Eliminar usuario"
                 color="text-red-500"
               />
@@ -46,7 +46,7 @@
             <div class="grid grid-rows-1 gap-2">
               <a @click="goToEditor('')" class="cursor-pointer">
                 <AdminSetting
-                  icon="create"
+                  icon="text-box-plus-outline"
                   text="Crear artículo"
                   color="text-blue-600"
                 />
@@ -55,7 +55,7 @@
             <div class="grid grid-rows-1 gap-2">
               <a @click="openModal(true)" class="cursor-pointer">
                 <AdminSetting
-                  icon="rate_review"
+                  icon="file-document-edit-outline"
                   text="Editar artículo"
                   color="text-orange-500"
                 />
@@ -63,7 +63,7 @@
             </div>
             <div class="grid grid-rows-1 gap-2">
               <AdminSetting
-                icon="preview"
+                icon="file-certificate-outline"
                 text="Revisar artículo"
                 color="text-purple-500"
               />
