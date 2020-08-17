@@ -7,32 +7,26 @@
         >
           <div class="flex flex-wrap container">
             <a class="w-1/3" href="#">
-              <v-icon
-                class="pt-3 mx-10 text-gray-100 text-center align-middle"
-                scale="2"
-                name="info-circle"
-              />
+              <i class="material-icons md-36 mt-4" style="color: #fafafa;"
+                >info</i
+              >
               <p class="text-white text-base">
                 About me
               </p>
             </a>
             <a class="w-1/3" href="#">
-              <v-icon
-                class="pt-3 mx-10 text-gray-100 text-center align-middle"
-                scale="2"
-                name="file"
-              />
+              <i class="material-icons md-36 mt-4" style="color: #fafafa;"
+                >text_snippet</i
+              >
 
               <p class="text-white text-base">
                 Curriculum
               </p>
             </a>
             <a class="w-1/3" href="#">
-              <v-icon
-                class="pt-3 mx-10 text-gray-100 text-center align-middle"
-                scale="3"
-                name="graduation-cap"
-              />
+              <i class="material-icons md-36 mt-4" style="color: #fafafa;"
+                >science</i
+              >
 
               <p class="text-white text-base">
                 Final degree project
@@ -152,7 +146,7 @@ export default {
                 );
               }, 2000);
               this.nertworkError = true;
-              this.getArticles()
+              this.getArticles();
             } else this.sleep(2000).then(() => this.getArticles());
           } else {
             console.log(err.code);
