@@ -1,6 +1,6 @@
 <template>
   <div class="border rounded-md card">
-    <i class="material-icons md-36 mt-4" :class="color"> {{ icon }} </i>
+    <i class="material-icons md-36 mt-4 mdi" :class="this.computedClass" />
     <p class="text-xl pt-3 pb-3">{{ text }}</p>
   </div>
 </template>
@@ -12,14 +12,14 @@ export default {
     text: String,
     color: String,
   },
-  computed: {
-    style() {
-      return "color: " + this.color;
-    },
+  beforeMount() {
+    this.computedClass = "color: " + this.color + " mdi-" + this.icon;
   },
   components: {},
   data() {
-    return {};
+    return {
+      computedClass: "",
+    };
   },
   methods: {},
 };
