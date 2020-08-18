@@ -67,7 +67,11 @@ module.exports = {
     logger.log("Checking if user is SuperUser", 0);
     logger.log("JWT => " + req.headers.authorization, 0);
     try {
-      const token = req.headers.authorization;
+      let token = req.headers.authorization;
+      if (token.startsWith('Bearer ')) {
+        // Remove Bearer from string
+        token = token.slice(7, token.length);
+      }
       req.userData = jwt.verify(token, "SuperSecretKeyUsed");
       let text = "SELECT * FROM user_login WHERE id = $1";
       let values = [req.userData.userId];
