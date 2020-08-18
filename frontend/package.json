@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "production": "parcel build public/index.html"
+    "production": "parcel build src/main.js"
   },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
@@ -19,14 +19,13 @@
     "core-js": "^3.6.5",
     "form-data": "^3.0.0",
     "node-sass": "^4.14.1",
-    "parcel-bundler": "^1.12.4",
     "sass-loader": "^9.0.2",
     "tailwindcss": "^1.6.0",
     "vue": "^2.6.11",
     "vue-nl2br": "^0.1.2",
     "vue-router": "^3.3.4",
     "vue-toasted": "^1.1.28",
-    "vue2-editor": "^2.0.42-images",
+    "vue2-editor": "^2.10.2",
     "vuex": "^3.5.1",
     "vuex-persistedstate": "^3.0.1"
   },
@@ -43,6 +42,8 @@
     "eslint": "^7.5.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^6.2.2",
+    "parcel": "^2.0.0-beta.1",
+    "parcel-bundler": "^1.12.4",
     "parcel-plugin-vue": "^1.5.0",
     "prettier": "^2.0.5",
     "vue-template-compiler": "^2.6.11"
