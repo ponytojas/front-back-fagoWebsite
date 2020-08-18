@@ -256,10 +256,11 @@ router.post(
         db.query(text, values, (err) => {
             if (err) {
                 logger.log(err.stack, 3);
+                return res.status(400).send({msg: err.message})
             } else {
                 logger.log("Received a new tag, added correctly to database", 1);
                 logger.log("Client response => New tag added to database", 1);
-                res.status(200).send({msg: "New tag added to database"});
+                res.status(200).send({msg: "New tag added to database", uuid_tag});
             }
         });
         await modelData.setData(await modelTags.getAllTags(), 1);
