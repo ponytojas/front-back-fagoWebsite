@@ -1,11 +1,28 @@
 <template>
-  <div
-    class="h-screen w-screen bg-cover"
-    :style="{
-      'background-image': 'url(https://ponytojas.dev/fago-background.png)',
-    }"
-  >
-    <div class="flex justify-center align-middle h-screen">
+  <div>
+    <img
+      class="h-screen w-screen bg-cover"
+      src="../assets/fago-background.png"
+      style="
+        position: fixed;
+        z-index: 1;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+      "
+      alt="Fago Background"
+      srcset="
+        ../assets/fago-background-xsmall.png  711w,
+        ../assets/fago-background-small.png  1067w,
+        ../assets/fago-background-medium.png 1778w,
+        ../assets/fago-background-large.png  2666w
+      "
+      sizes="60vw"
+    />
+    <div
+      class="flex justify-center align-middle h-screen"
+      style="position: relative; z-index: 100;"
+    >
       <div
         class="self-center w-auto h-auto py-12 px-12 card border-gray-500 border rounded-md grid grid-rows-4 grid-flow-col gap-4"
       >
