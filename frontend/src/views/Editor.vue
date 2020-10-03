@@ -22,8 +22,6 @@
           v-model="content"
           class="bg-white border-black border mx-16"
           :editorOptions="editorOptions"
-          useCustomImageHandler
-          @imageAdded="handleImageAdded"
         />
         <div class="flex justify-center w-full">
           <multiselect
@@ -121,7 +119,7 @@ const editorOptions = {
         [{ color: [] }, { background: [] }],
         [{ align: [] }],
         ["clean"],
-        ["link", "image", "video"],
+        ["link", "video"],
         ["emoji"],
       ],
       handlers: {
@@ -185,36 +183,6 @@ export default {
       this.$router.push("admin");
     },
 
-    handleImageAdded: function (file, Editor, cursorLocation) {
-      console.log("Inserting image to server");
-      this.file = file;
-
-      let formData = new FormData();
-      formData.append("editor-image", this.file); // appending file
-
-      // sending file to the backend
-      axios
-        .post("http://localhost:3000/editor-images", formData)
-        .then((res) => {
-          console.log(res.data);
-          let url = res.data;
-          Editor.insertEmbed(
-            cursorLocation,
-            "image",
-            "http://localhost:3000" + url
-          );
-          this.insertImageWidth(url);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    insertImageWidth(fileUploaded) {
-      this.content = this.content.replace(
-        fileUploaded + '"',
-        fileUploaded + '" width="500"'
-      );
-    },
   },
 };
 </script>
