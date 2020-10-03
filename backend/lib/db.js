@@ -1,15 +1,13 @@
 // lib/db.js
-const { Client } = require("pg");
-const CONFIG = require("./config.json");
+const { Pool } = require("pg");
+const dotenv = require("dotenv");
+dotenv.config();
 
-const client = new Client({
-  host: CONFIG.host,
-  user: CONFIG.user,
-  database: CONFIG.database,
-  password: CONFIG.password,
-  port: CONFIG.port,
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
-client.connect();
-
-module.exports = client;
+module.exports = pool;

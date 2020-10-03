@@ -1,12 +1,11 @@
 // routes/router.js
 const express = require("express");
 const router = express.Router();
-const multer = require('multer')
 const uuid = require("uuid");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const db = require("../lib/db.js");
+const pool = require("../lib/db.js");
 const userMiddleware = require("../middleware/users.js");
 const articleMiddleware = require("../middleware/articles.js");
 const tagMiddleware = require("../middleware/tags.js");
@@ -19,37 +18,14 @@ const modelArticlesTags = require("../lib/article-tag.js");
 const modelData = require("../data/data");
 firstServerRun().then(() => logger.log("Everything up-to-date", 1));
 
-const path = "./uploads";
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path);
-    },
-    filename: (req, file, cb) => {
-        cb(null, uuid.v4().toString() + "_" + file.originalname);
-    }
-});
-
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-        cb(null, true);
-    } else {
-        cb("Type file is not access", false);
-    }
-};
-
-const upload = multer({
-    storage,
-    fileFilter,
-    limits: 1024 * 1024 * 5
-});
-
 async function firstServerRun() {
+    let db = await pool.connect();
     logger.log("Starting to generate data for first run", 0);
-    await modelData.setData(await modelArticles.getAllArticles(), 0);
-    await modelData.setData(await modelTags.getAllTags(), 1);
+    await modelData.setData(await modelArticles.getAllArticles(db), 0);
+    await modelData.setData(await modelTags.getAllTags(db), 1);
     await modelData.setData(await modelArticlesTags.getAllArticlesTags(), 2);
     await modelData.setData("", 3);
+    db.release();
 }
 
 router.get("/", async (request, response) => {
@@ -61,9 +37,10 @@ router.post(
     "/sign-up",
     userMiddleware.isSuperUser,
     userMiddleware.validateRegister,
-    (req, res, next) => {
+    async (req, res, next) => {
         let text = "SELECT * FROM user_login WHERE LOWER(username) = LOWER($1)";
         let values = [req.body.username];
+        let db = await pool.connect();
         db.query(text, values, (err, result) => {
             if (result.rows.length) {
                 logger.log(
@@ -115,12 +92,14 @@ router.post(
                 });
             }
         });
+        db.release();
     }
 );
 
-router.post("/login", (req, res, next) => {
+router.post("/login", async (req, res, next) => {
     let text = "SELECT * FROM user_login WHERE LOWER(username) = LOWER($1)";
     let values = [req.body.username];
+    let db = await pool.connect();
     db.query(text, values, (err, result) => {
         if (err) {
             return res.status(400).send({msg: err});
@@ -190,6 +169,7 @@ router.post("/login", (req, res, next) => {
             });
         }
     });
+    db.release();
 });
 
 router.get("/secret-route", userMiddleware.isLoggedIn, (req, res, next) => {
@@ -229,6 +209,7 @@ router.post(
             req.body.author,
             date,
         ];
+        let db = await pool.connect();
         db.query(text, values, (err) => {
             if (err) {
                 logger.log(err.stack, 3);
@@ -240,6 +221,7 @@ router.post(
         });
         await modelData.setData(await modelArticles.getAllArticles(), 0);
         await modelData.setData("", 3);
+        db.release();
     }
 );
 
@@ -253,6 +235,7 @@ router.post(
         let uuid_tag = uuid.v4();
         let text = "INSERT INTO tag(tag_id, tag_name) VALUES($1, $2)";
         let values = [uuid_tag, req.body.tag_name];
+        let db = await pool.connect();
         db.query(text, values, (err) => {
             if (err) {
                 logger.log(err.stack, 3);
@@ -263,15 +246,18 @@ router.post(
                 res.status(200).send({msg: "New tag added to database", uuid_tag});
             }
         });
-        await modelData.setData(await modelTags.getAllTags(), 1);
+        await modelData.setData(await modelTags.getAllTags(db), 1);
         await modelData.setData("", 3);
+        db.release();
     }
 );
 
 router.get("/tags", async (req, res, next) => {
     logger.log("A new request trying to get all tags", 0);
-    res.send(await modelTags.getAllTags());
+    let db = await pool.connect();
+    res.send(await modelTags.getAllTags(db));
     logger.log("All tags sent", 1);
+    db.release();
 });
 
 router.post(
@@ -283,6 +269,7 @@ router.post(
     async (req, res, next) => {
         logger.log("Checking if article is not already linked to tag", 0);
         let oldQuery = "SELECT * FROM article_tag";
+        let db = await pool.connect();
         db.query(oldQuery, [], (err, result) => {
             if (err) {
                 console.log(err.stack, 3);
@@ -312,39 +299,50 @@ router.post(
                 }
             });
         });
-        await modelData.setData(await modelArticlesTags.getAllArticlesTags(), 2);
+        await modelData.setData(await modelArticlesTags.getAllArticlesTags(db), 2);
         await modelData.setData("", 3);
+        db.release();
     }
 );
 
 router.get("/article-tag", async (req, res, next) => {
     logger.log("A new request trying to get all articles-tags", 0);
-    res.send(await modelArticlesTags.getAllArticlesTags());
+    let db = await pool.connect();
+    res.send(await modelArticlesTags.getAllArticlesTags(db));
     logger.log("All articles-tags sent", 1);
+    db.release();
 });
 
 router.get("/get-data-for-web-debug", async (req, res, next) => {
     logger.log("A new request trying to get data for web", 4);
-    await modelData.setData(await modelArticles.getAllArticles(), 0);
-    await modelData.setData(await modelTags.getAllTags(), 1);
-    await modelData.setData(await modelArticlesTags.getAllArticlesTags(), 2);
+    let db = await pool.connect();
+    res.send(await modelArticlesTags.getAllArticlesTags(db));
+    await modelData.setData(await modelArticles.getAllArticles(db), 0);
+    await modelData.setData(await modelTags.getAllTags(db), 1);
+    await modelData.setData(await modelArticlesTags.getAllArticlesTags(db), 2);
     await modelData.setData("", 3);
     res.send(await modelData.getData());
     logger.log("All data for web sent", 4);
+    db.release();
 });
 
 router.get("/get-data-for-web", async (req, res, next) => {
     logger.log("A new request trying to get data for web", 0);
+    let db = await pool.connect();
+    res.send(await modelArticlesTags.getAllArticlesTags(db));
     res.send(await modelData.getData());
     logger.log("All data for web sent", 1);
+    db.release();
 });
 
+
 router.post(
-    "/editor-images",
+    "/article-new",
     userMiddleware.isLoggedIn,
-    upload.single('editor-image'),
-    async (req, res) => {
-        await res.send(req.file.path);
+    userMiddleware.isSuperUser,
+    async (req, res, next) => {
+        let body = req.body;
+        logger.log("Received a request for a new article", 0);
     }
 );
 

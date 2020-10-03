@@ -1,6 +1,4 @@
-const db = require("../lib/db.js");
-
-const getAllTags = function () {
+const getAllTags = function (db) {
   return new Promise(async (resolve) => {
     await db.query("SELECT * from tag", [], (err, res) => {
       if (err) {
