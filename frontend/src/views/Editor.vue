@@ -1,26 +1,26 @@
 <template>
   <div class="w-screen h-screen bg-yellow-400 absolute overflow-auto">
-    <div class="flex justify-center align-middle h-full bg-yellow-400 relative">
+    <div class="flex justify-center align-middle h-auto bg-yellow-400 relative">
       <div class="mt-12 h-full w-9/12 mb-12 bg-white px-4">
-        <div class="grid grid-cols-6 gap-1 mt-10 mb-10">
-          <p class="col-span-2 text-2xl">Título del artículo</p>
+        <div class="grid grid-cols-6 gap-1 mt-10 mb-10 ml-16">
+          <p class="col-span-1 text-xl">Título del artículo</p>
           <input
             v-model="title"
             placeholder="Título"
-            class="border-black border-2 w-9/12 p-2 mb-4 col-span-4"
+            class="border-black border w-11/12 p-2 mb-4 col-span-5 rounded"
           />
         </div>
-        <div class="grid grid-cols-6 gap-1 mt-10 mb-10">
-          <p class="col-span-2 text-2xl">Subtítulo del artículo</p>
+        <div class="grid grid-cols-6 gap-1 mt-10 mb-10 ml-16">
+          <p class="col-span-1 text-xl">Subtítulo del artículo</p>
           <input
             v-model="subtitle"
-            placeholder="Título"
-            class="border-black border-2 w-9/12 p-2 mb-4 col-span-4"
+            placeholder="Subtítulo"
+            class="border-black border w-11/12 p-2 mb-4 col-span-5 rounded"
           />
         </div>
         <vue-editor
           v-model="content"
-          class="bg-white border-black border-2 mx-16"
+          class="bg-white border-black border mx-16"
           :editorOptions="editorOptions"
           useCustomImageHandler
           @imageAdded="handleImageAdded"
@@ -42,6 +42,38 @@
             @tag="addTag"
           ></multiselect>
         </div>
+        <div class="flex justify-center w-full mb-10">
+          <gifSearch
+            apiKey="tOABssXIdHe3QlBdR0TSMB0aGdH8a6PW"
+            @clicked="onClickGIF"
+            class="mt-10"
+          />
+        </div>
+        <div class="flex justify-center w-full mb-10">
+          <star-rating
+            v-model="rating"
+            :max-rating="3"
+            :show-rating="false"
+          ></star-rating>
+        </div>
+        <div class="grid grid-cols-8 gap-2 mt-10 mb-10 ml-16">
+          <div class="col-span-2" />
+          <button
+            class="shadow col-span-1 h-auto w-auto bg-green-500 hover:bg-green-400 sm:text-lg focus:outline-none text-white rounded"
+            type="button"
+            @click="onClickCreate"
+          >
+            Crear artículo
+          </button>
+          <div class="col-span-2" />
+          <button
+            class="shadow col-span-1 h-auto w-auto bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent sm:text-lg rounded"
+            type="button"
+            @click="onClickCancel"
+          >
+            Cancelar
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -53,6 +85,8 @@ import Emoji from "quill-emoji";
 import "quill-emoji/dist/quill-emoji.css";
 import axios from "axios";
 import Multiselect from "vue-multiselect";
+import gifSearch from "vue-gif-search";
+import StarRating from "vue-star-rating";
 
 Quill.register(
   {
@@ -101,16 +135,19 @@ const editorOptions = {
 export default {
   components: {
     VueEditor,
+    StarRating,
     Multiselect,
+    gifSearch,
   },
   data() {
     return {
-      content: "<h1>Some initial content</h1>",
+      content: "",
       file: "",
       title: "",
       subtitle: "",
       options: [],
       tags: [],
+      rating: 1 ,
     };
   },
   async beforeMount() {
@@ -133,6 +170,19 @@ export default {
       };
       this.options.push(tag);
       this.tags.push(tag);
+    },
+
+    onClickGIF(value) {
+      console.log(value);
+      this.content = this.content + "<img src='" + value + "' width='256px' />";
+    },
+
+    onClickCreate() {
+      console.log("Crear");
+    },
+
+    onClickCancel() {
+      this.$router.push("admin");
     },
 
     handleImageAdded: function (file, Editor, cursorLocation) {
@@ -170,11 +220,7 @@ export default {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 //Editor, cursorLocation, resetUploader
-<style scoped>
-#multiselect {
-  width: 90% !important;
-  max-width: 90% !important;
-}
+<style>
 .bem {
   margin: 8px !important;
 }
