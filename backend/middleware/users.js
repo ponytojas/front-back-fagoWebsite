@@ -72,9 +72,10 @@ module.exports = {
         // Remove Bearer from string
         token = token.slice(7, token.length);
       }
-      req.userData = jwt.verify(token, "SuperSecretKeyUsed");
-      let text = "SELECT * FROM user_login WHERE id = $1";
-      let values = [req.userData.userId];
+      let data = jwt.verify(token, "SuperSecretKeyUsed");
+      let text = "SELECT * FROM user_login WHERE user_id = $1";
+      let values = [data.userId];
+
       db.query(text, values, (err, result) => {
         if (err) return res.status(400).send({ msg: err });
         else if (result.rows[0].is_superuser) {
