@@ -60,9 +60,9 @@ export default {
   },
   beforeMount() {
     this.tags = this.article.tags;
-    this.dateToShow = this.article.update_date.slice(
+    this.dateToShow = this.article.updated_at.slice(
       0,
-      this.article.update_date.indexOf("T")
+      this.article.updated_at.indexOf("T")
     );
     this.textPreview =
       this.article.body.split(/\s+/).slice(0, 20).join(" ") + "...";
