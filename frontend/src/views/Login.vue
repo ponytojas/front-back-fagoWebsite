@@ -21,15 +21,13 @@
     />
     <div
       class="flex justify-center align-middle h-screen"
-      style="position: relative; z-index: 100;"
+      style="position: relative; z-index: 100"
     >
       <div
         class="self-center w-auto h-auto py-12 px-12 card border-gray-500 border rounded-md grid grid-rows-4 grid-flow-col gap-4"
       >
         <div class="mt-5">
-          <p class="sm:text-xl lg:text-2xl xl:text-3xl text-green-500">
-            Login
-          </p>
+          <p class="sm:text-xl lg:text-2xl xl:text-3xl text-green-500">Login</p>
         </div>
         <div class="m-auto grid grid-cols-2">
           <p class="sm:text-lg lg:text-xl text-green-500 col-span-1">
@@ -92,24 +90,28 @@ export default {
   },
   methods: {
     async login() {
-      this.loading = true;
-      try {
-        const credentials = {
-          username: this.username,
-          password: this.password,
-        };
-        const response = await AuthService.login(credentials);
-        this.msg = response.msg;
-        if (response.msg == "Logged in correctly!")
-          this.colorClass = "text-green-600";
-        const token = response.token;
-        const user = response.user;
-        await this.$store
-          .dispatch("login", { token, user })
-          .then(() => this.$router.push("admin"));
-      } catch (error) {
-        this.loading = false;
-        this.msg = error.response.data.msg;
+      if (!this.username) this.msg = "Missing username";
+      else if (!this.password) this.msg = "Missing password";
+      else {
+        this.loading = true;
+        try {
+          const credentials = {
+            username: this.username,
+            password: this.password,
+          };
+          const response = await AuthService.login(credentials);
+          this.msg = response.msg;
+          if (response.msg == "Logged in correctly!")
+            this.colorClass = "text-green-600";
+          const token = response.token;
+          const user = response.user;
+          await this.$store
+            .dispatch("login", { token, user })
+            .then(() => this.$router.push("admin"));
+        } catch (error) {
+          this.loading = false;
+          this.msg = error.response.data.msg;
+        }
       }
     },
   },
