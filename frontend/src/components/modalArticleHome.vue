@@ -24,7 +24,7 @@
           </div>
         </header>
         <section class="modal-body" id="modalDescription">
-          <nl2br name="body" tag="p" :text="body" />
+          <div v-html="body" />
         </section>
         <footer class="modal-footer">
           <div>
@@ -52,12 +52,10 @@
 </template>
 
 <script>
-import Nl2br from "vue-nl2br";
 
 export default {
   name: "modal",
   components: {
-    Nl2br,
   },
   props: {
     value: {
