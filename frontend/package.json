@@ -5,8 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "production": "parcel build src/main.js"
+    "lint": "vue-cli-service lint"
   },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
@@ -21,6 +20,7 @@
     "node-sass": "^4.14.1",
     "quill-emoji": "^0.1.8",
     "sass-loader": "^10.0.2",
+    "sweetalert2": "^10.3.5",
     "tailwindcss": "^1.8.10",
     "vue": "^2.6.12",
     "vue-gif-search": "^1.0.1",
@@ -45,10 +45,7 @@
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-vue": "^7.0.0",
-    "parcel": "^2.0.0-beta.1",
-    "parcel-bundler": "^1.12.4",
-    "parcel-plugin-vue": "^1.5.0",
+    "eslint-plugin-vue": "^7.0.1",
     "prettier": "^2.1.2",
     "vue-template-compiler": "^2.6.12"
   }
