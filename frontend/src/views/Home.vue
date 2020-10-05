@@ -191,7 +191,7 @@ export default {
 </script>
 
 <style scoped>
-@media (max-width: 768px){
+@media (max-width: 768px) {
   .searchbar {
     margin-top: 5px !important;
   }
