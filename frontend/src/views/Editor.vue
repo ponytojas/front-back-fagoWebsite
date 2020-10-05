@@ -170,7 +170,7 @@ export default {
     },
 
     onClickGIF(value) {
-      this.content = this.content + "<img src='" + value + "' width='256px' />";
+      this.content = this.content + "<img src='" + value + "' class='w-1/2 sm:w-auto block mx-auto' />";
     },
 
     async onClickCreate() {
