@@ -181,41 +181,6 @@ router.get("/updates", async (req, res, next) => {
 });
 
 router.post(
-    "/articles",
-    userMiddleware.isLoggedIn,
-    userMiddleware.isSuperUser,
-    async (req, res, next) => {
-        console.log(req.userData);
-        let date = Date.now();
-        let uuid_article = uuid.v4();
-        let text =
-            "INSERT INTO article(article_id, title, subtitle, body, author, create_date, update_date, reviewed)" +
-            "VALUES($1, $2, $3, $4, $5,  to_timestamp($6 / 1000.0), to_timestamp($6 / 1000.0), false)";
-        let values = [
-            uuid_article,
-            req.body.title,
-            req.body.subtitle,
-            req.body.body,
-            req.body.author,
-            date,
-        ];
-        let db = await pool.connect();
-        db.query(text, values, (err) => {
-            if (err) {
-                logger.log(err.stack, 3);
-            } else {
-                logger.log("Received a new article, added correctly to database", 1);
-                logger.log("Client response => New article added to database", 1);
-                res.status(200).send({msg: "New article added to database"});
-            }
-        });
-        await modelData.setData(await modelArticles.getAllArticles(), 0);
-        await modelData.setData("", 3);
-        db.release();
-    }
-);
-
-router.post(
     "/tags",
     userMiddleware.isLoggedIn,
     userMiddleware.isSuperUser,
@@ -364,9 +329,10 @@ router.post(
                 logger.log("Article added to database", 1);
                 await linkTagsToArticle(article_id, req.body.tags, db)
                 res.status(200).send({msg: "Article added to database"});
+                await modelData.setData(await modelArticles.getAllArticles(db), 0);
+                await modelData.setData("", 3);
             }
         });
-        await modelData.setData("", 3);
     }
 );
 
