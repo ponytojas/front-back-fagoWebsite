@@ -10,7 +10,7 @@
       :date="dateToShow"
     />
     <a href="#" @click="openModal">
-      <div class="border border-gray-500 rounded-sm pb-3 mb-5">
+      <div class="border-gray-500 rounded-sm pb-3 mb-5">
         <p
           class="text-xl sm:text-xl md:text-2xl lg:text-3xl text-green-500 pt-3 pb-1"
         >
@@ -73,6 +73,7 @@ export default {
 <style scoped>
 .fullCard {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-width: 1px;
 }
 
 .fullCard:hover {
