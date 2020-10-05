@@ -140,12 +140,11 @@ export default {
   data() {
     return {
       content: "",
-      file: "",
       title: "",
       subtitle: "",
       options: [],
       tags: [],
-      rating: 1 ,
+      rating: 1,
     };
   },
   async beforeMount() {
@@ -171,18 +170,24 @@ export default {
     },
 
     onClickGIF(value) {
-      console.log(value);
       this.content = this.content + "<img src='" + value + "' width='256px' />";
     },
 
-    onClickCreate() {
-      console.log("Crear");
+    async onClickCreate() {
+      let body = {
+        title: this.title,
+        subtitle: this.subtitle,
+        content: this.content,
+        tags: this.tags,
+        rating: this.rating,
+      };
+      console.log(body);
+      await axios.post("http://localhost:3000/article-new", body);
     },
 
     onClickCancel() {
       this.$router.push("admin");
     },
-
   },
 };
 </script>
