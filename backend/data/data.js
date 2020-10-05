@@ -1,3 +1,5 @@
+const logger = require("../lib/logger");
+
 const snooze = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 let globalLock = false;
@@ -43,6 +45,7 @@ const setTimestampArticlesTags = async function() {
 }
 
 const setData = async function(newData, variable){
+    logger.log("Generating new data", 0);
     if (dataLock)
         while(dataLock)
             await snooze(1000);
@@ -92,6 +95,8 @@ async function generateNewWebData(){
     }
     globalTimestamp = Date.now()
     globalLock = false;
+    logger.log("New data generated", 0);
+
 }
 
 const getData = function(){
