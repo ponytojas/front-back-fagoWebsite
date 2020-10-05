@@ -12,13 +12,13 @@
           <div id="modalTitle">
             <p
               name="header"
-              class="text-base sm:text-xl md:text-2xl lg:text-3xl text-green-500"
+              class="text-xl sm:text-xl md:text-2xl lg:text-3xl text-green-500"
             >
               {{ title }}
             </p>
           </div>
           <div class="modal-subtitle">
-            <p name="header" class="text-base sm:text-lg text-gray-800">
+            <p name="header" class="text-lg sm:text-lg text-gray-800">
               {{ subtitle }}
             </p>
           </div>
@@ -52,11 +52,9 @@
 </template>
 
 <script>
-
 export default {
   name: "modal",
-  components: {
-  },
+  components: {},
   props: {
     value: {
       required: true,
@@ -100,14 +98,23 @@ export default {
   background: #fafafa;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  width: 85%;
+  width: 95%;
   padding: 10px;
 }
 
+@media (min-width: 769px) {
+  .modal-body {
+    padding: 20px 5% 0px 5% !important;
+  }
+  .modal-header {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
 .modal-header,
-.modal-footer,
 modal-subtitle {
-  padding: 15px;
+  padding-top: 10px;
   display: flex;
 }
 
@@ -120,8 +127,11 @@ modal-subtitle {
 }
 
 .modal-footer {
+  display: flex;
   border-top: 1px solid #eeeeee;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding: 5px 10px 0px 10px;
+  margin-bottom: -5px;
 }
 
 .modal-body {
