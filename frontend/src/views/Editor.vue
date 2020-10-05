@@ -178,15 +178,27 @@ export default {
     },
 
     async onClickCreate() {
-      let body = {
-        title: this.title,
-        subtitle: this.subtitle,
-        content: this.content,
-        tags: this.tags,
-        rating: this.rating,
-      };
-      console.log(body);
-      await axios.post("http://localhost:3000/article-new", body);
+      this.$swal({
+        title: "¿Estás seguro?",
+        text: "Esto enviará el artículo para guardarlo",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, envíalo",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this.$swal("¡Enviando!", "Espera unos segundos", "success");
+          let body = {
+            title: this.title,
+            subtitle: this.subtitle,
+            content: this.content,
+            tags: this.tags,
+            rating: this.rating,
+          };
+          await axios.post("http://localhost:3000/article-new", body);
+        }
+      });
     },
 
     onClickCancel() {

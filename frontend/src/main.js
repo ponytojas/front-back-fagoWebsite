@@ -9,13 +9,13 @@ import { VueSpinners } from "@saeris/vue-spinners";
 import Autocomplete from "@trevoreyre/autocomplete-vue";
 import "@trevoreyre/autocomplete-vue/dist/style.css";
 import Toasted from "vue-toasted";
-import Swal from "sweetalert2";
+import VueSweetalert2 from "vue-sweetalert2";
+Vue.use(VueSweetalert2);
 
 // CommonJS
 Vue.use(VueSpinners);
 Vue.use(Autocomplete);
 Vue.use(Toasted);
-Vue.use(Swal);
 
 Vue.config.productionTip = false;
 Axios.defaults.headers.common["Authorization"] = `Bearer ${store.state.token}`;
