@@ -1,7 +1,9 @@
 // middleware/users.js
 const jwt = require("jsonwebtoken");
-const db = require("../lib/db.js");
+const pool = require("../lib/db.js");
 const logger = require("../lib/logger");
+const dotenv = require("dotenv");
+dotenv.config();
 
 module.exports = {
   validateRegister: (req, res, next) => {
@@ -52,7 +54,7 @@ module.exports = {
         // Remove Bearer from string
         token = token.slice(7, token.length);
       }
-      req.userData = jwt.verify(token, "SuperSecretKeyUsed");
+      req.userData = jwt.verify(token, process.env.JWT_KEY);
       logger.log("Correct user session", 1);
       next();
     } catch (err) {
@@ -63,16 +65,17 @@ module.exports = {
     }
   },
 
-  isSuperUser: (req, res, next) => {
+   isSuperUser: async (req, res, next) => {
     logger.log("Checking if user is SuperUser", 0);
     logger.log("JWT => " + req.headers.authorization, 0);
+     let db = await pool.connect();
     try {
       let token = req.headers.authorization;
       if (token.startsWith('Bearer ')) {
         // Remove Bearer from string
         token = token.slice(7, token.length);
       }
-      let data = jwt.verify(token, "SuperSecretKeyUsed");
+      let data = jwt.verify(token, process.env.JWT_KEY);
       let text = "SELECT * FROM user_login WHERE user_id = $1";
       let values = [data.userId];
 
@@ -88,11 +91,13 @@ module.exports = {
           });
         }
       });
+      db.release();
     } catch (err) {
       logger.log("There was an error checking the session", 3);
       return res.status(401).send({
         msg: "Your session is not valid!",
       });
+      db.release();
     }
   },
 };
