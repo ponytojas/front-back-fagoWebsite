@@ -44,12 +44,10 @@
 </template>
 
 <script>
-import Nl2br from "vue-nl2br";
-
 export default {
   name: "modal",
   components: {
-    Nl2br,
+    
   },
   props: {
     value: {
