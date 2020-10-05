@@ -10,6 +10,8 @@ const userMiddleware = require("../middleware/users.js");
 const articleMiddleware = require("../middleware/articles.js");
 const tagMiddleware = require("../middleware/tags.js");
 const logger = require("../lib/logger");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const modelArticles = require("../lib/articles.js");
 const modelTags = require("../lib/tags.js");
@@ -131,7 +133,7 @@ router.post("/login", async (req, res, next) => {
                                 username: result.rows[0].username,
                                 userId: result.rows[0].user_id,
                             },
-                            "SuperSecretKeyUsed",
+                            process.env.JWT_KEY,
                             {
                                 expiresIn: "7d",
                             }
