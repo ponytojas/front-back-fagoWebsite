@@ -366,7 +366,7 @@ router.post(
                 res.status(200).send({msg: "Article added to database"});
             }
         });
-
+        await modelData.setData("", 3);
     }
 );
 
