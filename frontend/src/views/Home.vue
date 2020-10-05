@@ -9,31 +9,25 @@
             <a class="w-1/3" href="#">
               <i
                 class="material-icons md-36 mt-4 mdi mdi-information-outline"
-                style="color: #fafafa;"
+                style="color: #fafafa"
               />
-              <p class="text-white text-base">
-                About me
-              </p>
+              <p class="text-white text-base">About me</p>
             </a>
             <a class="w-1/3" href="#">
               <i
                 class="material-icons md-36 mt-4 mdi mdi-file-document-outline"
-                style="color: #fafafa;"
+                style="color: #fafafa"
               />
 
-              <p class="text-white text-base">
-                Curriculum
-              </p>
+              <p class="text-white text-base">Curriculum</p>
             </a>
             <a class="w-1/3" href="#">
               <i
                 class="material-icons md-36 mt-4 mdi mdi-school-outline"
-                style="color: #fafafa;"
+                style="color: #fafafa"
               />
 
-              <p class="text-white text-base">
-                Final degree project
-              </p>
+              <p class="text-white text-base">Final degree project</p>
             </a>
           </div>
           <div class="justify-center flex-row">
@@ -47,7 +41,7 @@
       </div>
       <div
         v-if="loaded"
-        class="flex flex-row align-middle justify-center h-auto"
+        class="flex flex-row align-middle justify-center h-auto sm:mt-10px"
       >
         <autocomplete
           class="w-1/2 sm:w-1/2 md:w-1/3 xl:w-1/3 lg:w-1/3 rounded-md mb-6 searchbar text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"
@@ -57,7 +51,6 @@
           ref="autocomplete"
           aria-label="Busca un artículo"
           style="
-            margin-top: -3vh;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
               0 6px 6px rgba(0, 0, 0, 0.23) !important;
           "
@@ -198,7 +191,13 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 768px){
+  .searchbar {
+    margin-top: 5px !important;
+  }
+}
 .searchbar {
+  margin-top: -3vh;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
 }
 .toasted {
