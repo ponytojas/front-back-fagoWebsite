@@ -23,7 +23,7 @@ async function firstServerRun() {
     logger.log("Starting to generate data for first run", 0);
     await modelData.setData(await modelArticles.getAllArticles(db), 0);
     await modelData.setData(await modelTags.getAllTags(db), 1);
-    await modelData.setData(await modelArticlesTags.getAllArticlesTags(), 2);
+    await modelData.setData(await modelArticlesTags.getAllArticlesTags(db), 2);
     await modelData.setData("", 3);
     db.release();
 }
@@ -64,7 +64,7 @@ router.post(
                         });
                     } else {
                         let text =
-                            "INSERT INTO user_login (id, username, password, register_date, is_superuser)" +
+                            "INSERT INTO user_login (user_id, username, password, register_date, is_superuser)" +
                             " VALUES ($1, $2, $3, to_timestamp($4 / 1000.0), $5) RETURNING *";
                         let date = Date.now();
                         let uuid_user = uuid.v4();
@@ -129,35 +129,25 @@ router.post("/login", async (req, res, next) => {
                         const token = jwt.sign(
                             {
                                 username: result.rows[0].username,
-                                userId: result.rows[0].id,
+                                userId: result.rows[0].user_id,
                             },
                             "SuperSecretKeyUsed",
                             {
                                 expiresIn: "7d",
                             }
                         );
-                        let text_last_login =
-                            "UPDATE user_login set last_login = now() where id = $1";
-                        let values_last_login = [result.rows[0].id];
-                        db.query(text_last_login, values_last_login, (err, result) => {
-                            if (err) {
-                                return res.status(400).send({msg: err});
-                            } else {
-                                logger.log(
-                                    "Received a request for a login, all data was correct",
-                                    1
-                                );
-                                logger.log("Client response => Logged in correctly", 1);
-                                return res.status(200).send({
-                                    msg: "Logged in correctly!",
-                                    token,
-                                    user: req.body.username,
-                                });
-                            }
+                        logger.log(
+                            "Received a request for a login, all data was correct",
+                            1
+                        );
+                        logger.log("Client response => Logged in correctly", 1);
+                        return res.status(200).send({
+                            msg: "Logged in correctly!",
+                            token,
+                            user: req.body.username,
                         });
                     }
-                }
-            );
+                });
         } else {
             logger.log(
                 "Received a request for a login, where there's not an user with that username",
@@ -199,8 +189,8 @@ router.post(
         let date = Date.now();
         let uuid_article = uuid.v4();
         let text =
-            "INSERT INTO article(article_id, title, subtitle, body, author, create_date, update_date)" +
-            "VALUES($1, $2, $3, $4, $5,  to_timestamp($6 / 1000.0), to_timestamp($6 / 1000.0))";
+            "INSERT INTO article(article_id, title, subtitle, body, author, create_date, update_date, reviewed)" +
+            "VALUES($1, $2, $3, $4, $5,  to_timestamp($6 / 1000.0), to_timestamp($6 / 1000.0), false)";
         let values = [
             uuid_article,
             req.body.title,
@@ -329,7 +319,6 @@ router.get("/get-data-for-web-debug", async (req, res, next) => {
 router.get("/get-data-for-web", async (req, res, next) => {
     logger.log("A new request trying to get data for web", 0);
     let db = await pool.connect();
-    res.send(await modelArticlesTags.getAllArticlesTags(db));
     res.send(await modelData.getData());
     logger.log("All data for web sent", 1);
     db.release();
@@ -341,10 +330,61 @@ router.post(
     userMiddleware.isLoggedIn,
     userMiddleware.isSuperUser,
     async (req, res, next) => {
-        let body = req.body;
         logger.log("Received a request for a new article", 0);
+
+        let article_id = uuid.v4();
+        let title = req.body.title;
+        let subtitle = req.body.subtitle;
+        let body = req.body.content;
+        let author = req.userData.username;
+        let date = Date.now();
+        let reviewed = false;
+        let level = req.body.rating;
+
+        let text =
+            "INSERT INTO article (article_id, title, subtitle, body, author, created_at, updated_at, reviewed, level)" +
+            " VALUES ($1, $2, $3, $4, $5, to_timestamp($6 / 1000.0), to_timestamp($6 / 1000.0), $7, $8) RETURNING *";
+        let values = [
+            article_id,
+            title,
+            subtitle,
+            body,
+            author,
+            date,
+            reviewed,
+            level
+        ];
+
+        let db = await pool.connect();
+        await db.query(text, values, async (err, result) => {
+            if (err) {
+                console.log(err.stack, 3);
+                return res.status(400).send({msg: err});
+            } else {
+                logger.log("Article added to database", 1);
+                await linkTagsToArticle(article_id, req.body.tags, db)
+                res.status(200).send({msg: "Article added to database"});
+            }
+        });
+
     }
 );
 
+async function linkTagsToArticle(article_id, tags, db) {
+    logger.log("Trying to link article to its tags", 0);
+    let index_max = tags.length;
+    for (let tag in tags) {
+        let insertQuery = "INSERT INTO article_tag(article, tag) VALUES($1, $2)";
+        let valuesInsert = [article_id, tags[tag].tag_id];
+        await db.query(insertQuery, valuesInsert, (err, result) => {
+            if (err) {
+                logger.log(err.stack, 3);
+            } else {
+                logger.log("Article correctly linked to tag", 1);
+            }
+        });
+    }
+    db.release();
+}
 
 module.exports = router;
