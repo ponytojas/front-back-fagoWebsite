@@ -17,7 +17,8 @@
           {{ article.title }}
         </p>
         <p class="text-lg text-green-700 pt-1 pb-3">{{ article.subtitle }}</p>
-        <p class="text-base text-gray-800 pb-3 px-5">{{ textPreview }}</p>
+        <div class="text-base text-gray-800 pb-3 px-5" v-html="textPreview" />
+
         <span
           v-for="(tag, index) in tags"
           :key="index"
