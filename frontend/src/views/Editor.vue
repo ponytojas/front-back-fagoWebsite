@@ -236,7 +236,20 @@ export default {
     },
 
     onClickCancel() {
-      this.$router.push("admin");
+      this.$swal({
+        title: "¿Estás seguro?",
+        text: "Saldrás y perderás todo lo que has escrito hasta el momento",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, salir",
+        cancelButtonText: "Cancelar y seguir escribiendo",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this.$router.push("admin");
+        }
+      });
     },
   },
 };
