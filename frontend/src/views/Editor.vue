@@ -54,6 +54,14 @@
             :show-rating="false"
           ></star-rating>
         </div>
+        <div class="flex justify-center w-full mb-10">
+          <input
+            type="file"
+            accept="image/*"
+            @change="uploadImage($event)"
+            id="file-input"
+          />
+        </div>
         <div class="grid grid-cols-8 gap-2 mt-10 mb-10 ml-16">
           <div class="col-span-2" />
           <button
@@ -154,6 +162,32 @@ export default {
   },
   computed: { editorOptions: () => editorOptions },
   methods: {
+    async uploadImage(event) {
+      const URL =
+        "https://api.imgbb.com/1/upload?key=" + process.env.VUE_APP_BB_KEY;
+
+      let data = new FormData();
+      data.append("image", event.target.files[0]);
+
+      let config = {
+        url: URL,
+        method: "post",
+        data: data,
+      };
+
+      axios(config)
+        .then(function (response) {
+          this.content =
+            this.content +
+            "<img src='" +
+            response.dadta.url +
+            "' class='w-1/2 sm:w-auto block mx-auto' />";
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
     async addTag(newTag) {
       let tag_id;
       await axios
