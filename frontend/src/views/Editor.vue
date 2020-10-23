@@ -145,6 +145,7 @@ export default {
     Multiselect,
     gifSearch,
   },
+
   data() {
     return {
       content: "",
@@ -158,6 +159,14 @@ export default {
   async beforeMount() {
     await axios.get("http://localhost:3000/tags").then(async (response) => {
       this.options = await JSON.parse(JSON.stringify(response.data));
+    });
+    this.content = this.$route.params.selected_article.body;
+    this.title = this.$route.params.selected_article.title;
+    this.subtitle = this.$route.params.selected_article.subtitle;
+    this.rating = this.$route.params.selected_article.rating;
+    this.options.forEach((option) => {
+      if (this.$route.params.selected_article.tags.includes(option.tag_name))
+        this.tags.push(option);
     });
   },
   computed: { editorOptions: () => editorOptions },

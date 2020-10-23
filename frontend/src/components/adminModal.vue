@@ -8,26 +8,14 @@
         aria-describedby="modalDescription"
         v-show="value"
       >
-        <header class="modal-header">
-          <div id="modalTitle">
-            <p
-              name="header"
-              class="text-base sm:text-xl md:text-2xl lg:text-3xl text-green-500"
-            >
-              {{ title }}
-            </p>
+        <section class="modal-body" id="modalDescription">
+          <div v-for="article in articles" :key="article.title">
+            <a @click="goToEditor(article)" style="cursor: pointer">
+              <p>{{ article.title }}</p>
+            </a>
           </div>
-          <div class="modal-subtitle">
-            <p name="header" class="text-base sm:text-lg text-gray-800">
-              {{ subtitle }}
-            </p>
-          </div>
-        </header>
+        </section>
 
-        <footer class="modal-footer">
-          <p name="footer"><b>Autor:</b> {{ author }}</p>
-          <p name="footer"><b>Última modificación:</b> {{ date }}</p>
-        </footer>
         <button
           type="button"
           class="shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white py-2 my-4 px-4 rounded content-center self-center w-24"
@@ -49,20 +37,27 @@ export default {
     value: {
       required: true,
     },
-    title: String,
-    subtitle: String,
-    author: String,
-    date: String,
+    articles: {
+      required: true,
+      default: [],
+    },
   },
+
+  data() {
+    return {};
+  },
+
   methods: {
     close() {
       this.$emit("input", !this.value);
     },
-    beforeMount() {
-      this.$props.date = this.$props.date.slice(
-        0,
-        this.$props.date.indexOf("T")
-      );
+
+    goToEditor(article) {
+      console.log(article);
+      this.$router.push({
+        name: "Editor",
+        params: { selected_article: article },
+      });
     },
   },
 };

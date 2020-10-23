@@ -2,10 +2,7 @@
   <div class="flex justify-center align-middle h-screen bg-yellow-400">
     <AdminModal
       v-model="articleModal"
-      title="Exameple"
-      subtitle="Example"
-      author="Example"
-      date="Example"
+      :articles="this.$store.getters.getArticles"
     />
     <div
       class="self-center w-11/12 lg:w-9/12 h-auto py-12 px-12 card border-gray-500 rounded-lg"
@@ -44,7 +41,7 @@
           <p class="text-2xl mt-8 pb-1">Gestión de artículos</p>
           <div class="grid grid-cols-3 gap-4 mt-5 col-span-3">
             <div class="grid grid-rows-1 gap-2">
-              <a @click="goToEditor('')" class="cursor-pointer">
+              <a @click="goToEditor" class="cursor-pointer">
                 <AdminSetting
                   icon="text-box-plus-outline"
                   text="Crear artículo"
@@ -100,18 +97,10 @@ export default {
       articles: [],
     };
   },
-  async mounted() {
-    this.articles = await this.$store.getters.getArticles;
-  },
 
   methods: {
-    goToEditor(article_id) {
-      if (article_id)
-        this.$router.push({
-          name: "editor",
-          params: { article_id: article_id },
-        });
-      else this.$router.push("editor");
+    goToEditor() {
+      this.$router.push("editor");
     },
 
     openModal(article) {
