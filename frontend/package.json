@@ -15,7 +15,7 @@
     "@mdi/font": "^5.5.55",
     "@saeris/vue-spinners": "^1.0.8",
     "@trevoreyre/autocomplete-vue": "^2.2.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "form-data": "^3.0.0",
     "node-sass": "^4.14.1",
